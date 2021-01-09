@@ -1,41 +1,22 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+
+
 import os
-from .constantes import CONFIG
 
-# A mettre à jour !!!
-
+# stockage du chemin vers le fichier courant
 chemin_actuel = os.path.dirname(os.path.abspath(__file__))
+# stockage du chemin vers les templates
 templates = os.path.join(chemin_actuel, "templates")
+# stockage du chemin vers les statics
 statics = os.path.join(chemin_actuel, "static")
 
-# On initie l'extension
-db = SQLAlchemy()
-# On met en place la gestion d'utilisateur-rice-s
-login = LoginManager()
-
+# Instanciation de l'application Flask dans la variable app. Appel des variables de chemin
+#   définies ci-dessus.
 app = Flask(
-    __name__,
+    "Mon_application",
     template_folder=templates,
     static_folder=statics
 )
 
-
-from .routes import generic
-from .routes import api
-
-
-def config_app(config_name="test"):
-    """ Create the application """
-    app.config.from_object(CONFIG[config_name])
-
-    # Set up extensions
-    db.init_app(app)
-    # assets_env = Environment(app)
-    login.init_app(app)
-
-    # Register Jinja template functions
-
-    return app
-
+# Import de la route vers l'accueil pour le démarrage
+from .routes import accueil

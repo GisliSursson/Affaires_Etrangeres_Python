@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{titre}} {% block titre %}{% endblock %}</title>
+        {% include "css.html" %}
+        {% include "metadata.html" %}
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+        <a class="navbar-brand" href="{{ url_for('accueil') }}">Appli réseau diplomatique</a>
+        <a class="navbar-brand" href="{{ url_for('accueil') }}">A propos</a>
+      </nav>
+    {% block body %}
+    {% endblock %}
+    </body>
+    <footer>
+
+    </footer>
+{% include "js.html" %}
+</html>
