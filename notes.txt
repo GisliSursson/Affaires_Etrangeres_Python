@@ -1,0 +1,2 @@
+Flask + whoosh : https://pythonhosted.org/Flask-WhooshAlchemy/ (projet abandonné)
+Folium pour les cartes : https://www.youtube.com/watch?v=QpBmO35pmVE (utiliser plutôt leaflet avec autobounds pour limiter automatiquement la taille de la carte)
