@@ -4,6 +4,21 @@ Exemple
 {% endblock %}
 
 {% block body %}
-<h1 class="display-1">Bienvenue !</h1>
-<h2>Cette application a pour but de permettre une navigation aisée dans les données du réseau diplomatique français ainsi que d'en proposer des représentations cartographiques.</h1>     
+<h1 class="display-3">Application "Réseau-diplo"</h1>
+<h2>Cette application a pour but de permettre une navigation aisée dans les données du réseau diplomatique français ainsi que d'en proposer des représentations cartographiques.</h1> 
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Rechercher par pays</a></li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Rechercher par ville</a></li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Recherche libre</a></li>
+        </ol>
+      </nav>
 {% endblock %}

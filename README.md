@@ -43,7 +43,7 @@ deactivate
 
 ### Déclaration de licences
 
-L'image de fonds, issue du site [Pexel](https://www.pexels.com/fr-fr/), est libre de réutilisation.
+L'image de fond, issue du site [Pexel](https://www.pexels.com/fr-fr/), est libre de réutilisation.
 
 
 
