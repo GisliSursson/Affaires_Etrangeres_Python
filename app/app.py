@@ -10,6 +10,7 @@ templates = os.path.join(chemin_actuel, "templates")
 # stockage du chemin vers les statics
 statics = os.path.join(chemin_actuel, "static")
 
+
 # Instanciation de l'application Flask dans la variable app. Appel des variables de chemin
 #   définies ci-dessus.
 app = Flask(

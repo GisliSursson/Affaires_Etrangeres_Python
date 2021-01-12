@@ -4,16 +4,34 @@
         <meta charset="UTF-8">
         <title>{{titre}} {% block titre %}{% endblock %}</title>
         {% include "css.html" %}
+        <style>
+            body {
+                background: url('https://images.pexels.com/photos/227433/pexels-photo-227433.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat center center fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                background-size: cover;
+                -o-background-size: cover;
+                }
+        </style>
         {% include "metadata.html" %}
     </head>
-    <body>
+   
     <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
         <a class="navbar-brand" href="{{ url_for('accueil') }}">Appli réseau diplomatique</a>
         <a class="navbar-brand" href="{{ url_for('accueil') }}">A propos</a>
-      </nav>
-    {% block body %}
-    {% endblock %}
+    </nav>
+    
+     <body class="body">
+        <div class="container">
+            <div class="card border-0 shadow my-5">
+              <div class="card-body p-5">
+                {% block body %}
+                {% endblock %}
+              </div>
+            </div>
+          </div>
     </body>
+  
     <footer>
 
     </footer>
