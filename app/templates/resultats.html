@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h3>Votre résultat pour : {{query}}</h3>
+{{myMap | safe}}
+
+<!--
+{% if dico|length == 1 %}
+<div class="panel panel-default">
+<table class="table table-striped table-dark">
+    <tbody>
+        {% for key, value in dico[0].items() %}
+        <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+</div>
+{% endif %}   
+        {% for element in dico %}
+        <div class="panel panel-default">
+        <table class="table table-striped table-dark">
+        <tbody>
+            
+        {% for key, value in element.items() %}
+        <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+        {% endfor %}
+
+-->
+
+{% endblock %}

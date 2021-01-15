@@ -7,4 +7,4 @@ with open(os.path.join(chemin_actuel, "modeles", "codes_pays.csv"), "r") as csvf
     reader = csv.reader(csvfile, delimiter=';')
     codes_dict = {}
     for row in reader:
-        codes_dict[row[0]] = row[1]
+        codes_dict[row[0].strip()] = row[1].strip()
