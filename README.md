@@ -1,4 +1,4 @@
-# Application de navigation dans les données du réseau diplomatique français
+# "Réseau-diplo." : application de navigation dans les données du réseau diplomatique français
 
 Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecole nationale des chartes.
 
@@ -6,28 +6,44 @@ Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecol
 
 ## Fonctionnalités
 
-## Installation
+L'application permet de rechercher dans les données par pays et via une recherche libre. 
 
-Si vous n'avez pas python, installez ces packages depuis votre terminal (Mac / Linux) :
+La recherche libre s'effectue via un moteur de recherche plein texte *pure Python*. La recherche plein texte renvoie des résultats pour les pays ou les villes. La recherche sur les villes n'est pas limitée aux capitales et peut également renvoyer des villes où se trouvent des représentations consulaires. 
+
+Les résultats de recherche sont présentés sous forme de cartes. 
+
+L'application gère également des comptes utilisateurs (inscription, connexion, mise à jour des données utilisateur, historique des recherches). 
+
+## Installation et lancement
+
+### Prérequis
+
+Les packages suivants sont nécessaires. Lancez depuis votre terminal (Mac / Linux) la commande suivante qui vérifiera si les packages existent sur votre système et les installera sinon
 
 ```bash
-sudo apt-get install python3 libfreetype6-dev python3-pip python3-virtualenv
+sudo apt-get install python3 libfreetype6-dev python3-pip python3-virtualenv sqlite3
+```
+
+Clonez le présent *repository* dans un dossier de votre 
+
+ ```bash
+git clone https://github.com/GisliSursson/Affaires_Etrangeres_Python.git
 ```
 
 Créez un environnement virtuel (dossier) dans lequel seront installées les librairies
 
 ```bash
 
-virtualenv [CHEMIN_VERS_VOTRE_DOSSIER] -p python3
+virtualenv [chemin vers le dossier où vous voulez stocker l'environnement] -p python3
 ```
 
 Activez l'environnement virtuel 
 
 ```bash
-source [CHEMIN_VERS_VOTRE_DOSSIER]/bin/activate
+source [chemin vers le dossier d'environnement]/bin/activate
 ```
 
-Installez ensuite les librairies nécessaires 
+Dans le dossier où vous avez cloné le projet, installez ensuite les librairies nécessaires 
 
 ```bash
 pip install -r requirements.txt
@@ -39,7 +55,13 @@ Pour désactiver l'environnement virtuel, tapez
 deactivate 
 ```
 
-## Lancement
+### Lancement
+
+Dans le dossier contenant le projet, lancez 
+
+```bash
+python3 run.py 
+```
 
 ### Déclaration de licences
 
