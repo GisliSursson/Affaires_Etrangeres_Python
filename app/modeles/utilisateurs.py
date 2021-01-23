@@ -10,6 +10,8 @@ class User(UserMixin, users.Model):
     user_login = users.Column(users.String(45), nullable=False, unique=True)
     user_email = users.Column(users.Text, nullable=False)
     user_password = users.Column(users.String(100), nullable=False)
+    # Ajout colonne historique
+    user_historique = users.Column(users.String(1000))
 
     @staticmethod
     def identification(login, motdepasse):

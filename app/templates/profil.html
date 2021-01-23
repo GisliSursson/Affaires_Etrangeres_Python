@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block titre %}Votre profil{%endblock%}
+
+{% block body %}
+
+<h1>Voici les données associées à votre profil :</h1>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">{{current_user.user_nom}}</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Pseudo</td>
+            <td>{{current_user.user_login}}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{current_user.user_email}}</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <h3>Votre historique de recherche :</h3>
+  <ul>
+      {% for element in liste_histo %}
+        <li>{{element}}</li>
+      {% endfor %}  
+  </ul>
+{% endblock %}

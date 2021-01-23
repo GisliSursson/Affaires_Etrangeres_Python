@@ -5,7 +5,7 @@ import json
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, current_user, logout_user
 from app.modeles.utilisateurs import User
-from .app import app, login
+from .app import app, login, users
 from .modeles.data_dict import codes_dict as data
 from .modeles.data_db import data as db
 
@@ -35,6 +35,11 @@ def recherche():
         type = type_recherche
         placeholder = 'Votre recherche ici'
     return render_template("recherche.html", type=type, placeholder=placeholder)
+
+@app.route("/profil")
+def profil():
+    liste_histo = current_user.user_historique.split(";")
+    return render_template("profil.html", current_user=current_user, liste_histo=liste_histo[:-1])
 
 # Définition de plusieurs fonctions pour la page résultats selon le type de recherche choisi
 @app.route("/resultats")
@@ -70,6 +75,11 @@ def resultats():
         popup = folium.Popup(html, min_width=800,max_width=800)
         folium.Marker(location=[element_liste["latitude"], element_liste["longitude"]], tooltip=element_liste["nom"],
                       popup=popup).add_to(myMap)
+    # Ecriture dans l'historique
+    if current_user.is_authenticated is True:
+        utilisateur = User.query.filter_by(user_id=current_user.user_id).first()
+        utilisateur.user_historique += query + ";"
+        users.session.commit()
 
     #query = request.args.get("query", None)
     #code = (data[query]).lower()
