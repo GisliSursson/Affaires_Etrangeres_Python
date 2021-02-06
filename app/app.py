@@ -1,3 +1,4 @@
+# Librairie utilisée pour gérer les chemins quel que soit l'OS
 import os
 
 from flask import Flask

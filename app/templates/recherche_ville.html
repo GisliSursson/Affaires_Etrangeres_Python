@@ -1,0 +1,20 @@
+{% extends './base.html' %}
+{% block titre %}
+Recherche
+{% endblock %}
+
+{% block body %}
+<form action="{{ url_for('resultats_ville') }}" method="GET">
+    <div class="form-group">
+      <label>Vous avez choisi le type de recherche : {{type}} </label>
+      <input type="search" class="form-control" aria-describedby="search" placeholder="{{placeholder}}" name="query">
+      <small class="form-text text-muted">Entrez les premières lettres de votre recherche</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Rechercher</button>
+  </form>
+  <footer class="bg-light text-center text-lg-start">
+    <div class="text-center p-3">
+        <a href="{{url_for('accueil')}}">Retour à l'accueil</a>
+      </div>
+    </footer>
+{% endblock %}
