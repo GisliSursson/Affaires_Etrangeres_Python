@@ -2,12 +2,66 @@
 {% block titre %}
 Recherche
 {% endblock %}
+{% if type == 'pays' %}
+{% block head %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+// L'autocomplete ne fonctionne qu'avec la liste en local
+  $( function() {
+    var availableTags = ["Afghanistan", "Afrique du Sud", "Åland, Îles", "Albanie", "Algérie", "Allemagne", "Andorre",
+    "Angola", "Anguilla", "Antarctique", "Antigua et Barbuda", "Antilles néerlandaises", "Arabie Saoudite", "Argentine",
+    "Arménie", "Aruba", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahrein", "Bangladesh", "Barbade", "Bélarus",
+    "Belgique", "Bélize", "Bénin", "Bermudes", "Bhoutan", "Bolivie (État plurinational de)",
+    "Bonaire, Saint-Eustache et Saba", "Bosnie-Herzégovine", "Botswana", "Bouvet, Ile", "Brésil", "Brunéi Darussalam",
+    "Bulgarie", "Burkina Faso", "Burundi", "Cabo Verde", "Caïmans, Iles", "Cambodge", "Cameroun", "Canada", "Chili",
+    "Chine", "Christmas, île", "Chypre", "Cocos/Keeling (Îles)", "Colombie", "Comores", "Congo",
+    "Congo, République démocratique du", "Cook, Iles", "Corée, République de",
+    "Corée, République populaire démocratique de", "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba",
+    "Curaçao", "Danemark", "Djibouti", "Dominicaine, République", "Dominique", "Egypte", "El Salvador",
+    "Emirats arabes unis", "Equateur", "Erythrée", "Espagne", "Estonie", "Etats-Unis d'Amérique", "Ethiopie",
+    "Falkland/Malouines (Îles)", "Féroé, îles", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie",
+    "Géorgie du sud et les îles Sandwich du sud", "Ghana", "Gibraltar", "Grèce", "Grenade", "Groenland", "Guadeloupe",
+    "Guam", "Guatemala", "Guernesey", "Guinée", "Guinée-Bissau", "Guinée équatoriale", "Guyana", "Guyane française",
+    "Haïti", "Heard, Ile et MacDonald, îles", "Honduras", "Hong Kong", "Hongrie", "Île de Man",
+    "Îles mineures éloignées des Etats-Unis", "Îles vierges britanniques", "Îles vierges des Etats-Unis",
+    "Inde", "Indien (Territoire britannique de l'océan)", "Indonésie", "Iran, République islamique d'", "Iraq",
+    "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jersey", "Jordanie", "Kazakhstan", "Kenya",
+    "Kirghizistan", "Kiribati", "Koweït", "Lao, République démocratique populaire", "Lesotho", "Lettonie", "Liban",
+    "Libéria", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macao", "Macédoine du nord", "Madagascar",
+    "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Mariannes du nord, Iles", "Maroc", "Marshall, Iles", "Martinique",
+    "Maurice", "Mauritanie", "Mayotte", "Mexique", "Micronésie, Etats Fédérés de", "Moldova, République de", "Monaco",
+    "Mongolie", "Monténégro", "Montserrat", "Mozambique", "Myanmar", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger",
+    "Nigéria", "Niue", "Norfolk, Ile", "Norvège", "Nouvelle-Calédonie", "Nouvelle-Zélande", "Oman", "Ouganda",
+    "Ouzbékistan", "Pakistan", "Palaos", "Palestine, Etat de", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay",
+    "Pays-Bas", "Pays inconnu", "Pays multiples", "Pérou", "Philippines", "Pitcairn", "Pologne", "Polynésie française",
+    "Porto Rico", "Portugal", "Qatar", "République arabe syrienne", "République centrafricaine", "Réunion", "Roumanie",
+    "Royaume-Uni de Grande-Bretagne et d'Irlande du Nord", "Russie, Fédération de", "Rwanda", "Sahara occidental",
+    "Saint-Barthélemy", "Saint-Kitts-et-Nevis", "Saint-Marin", "Saint-Martin (partie française)",
+    "Saint-Martin (partie néerlandaise)", "Saint-Pierre-et-Miquelon", "Saint-Siège", "Saint-Vincent-et-les-Grenadines",
+    "Sainte-Hélène, Ascension et Tristan da Cunha", "Sainte-Lucie", "Salomon, Iles", "Samoa", "Samoa américaines",
+    "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie",
+    "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Svalbard et île Jan Mayen",
+    "Swaziland", "Tadjikistan", "Taïwan, Province de Chine", "Tanzanie, République unie de", "Tchad", "Tchécoslovaquie",
+    "Tchèque, République", "Terres australes françaises", "Thaïlande", "Timor-Leste", "Togo", "Tokelau", "Tonga",
+    "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turks-et-Caïcos (Îles)", "Turquie", "Tuvalu", "Ukraine", "URSS",
+    "Uruguay", "Vanuatu", "Vatican", "Venezuela (République bolivarienne du)", "Viet Nam", "Viet Nam (Sud)",
+    "Wallis et Futuna", "Yémen", "Yougoslavie", "Zaïre", "Zambie", "Zimbabwe"];
 
+    $( "#autocomp" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
+{% endblock %}
+{% endif %}
 {% block body %}
-<form action="{{ url_for('resultats') }}" method="GET">
-    <div class="form-group">
+<form autocomplete="off" action="{{ url_for('resultats') }}" method="GET" id="the-basics">
+    <div class="form-group search">
       <label>Vous avez choisi le type de recherche : {{type}} </label>
-      <input type="search" class="form-control" aria-describedby="search" placeholder="{{placeholder}}" name="query">
+      <input id= "autocomp" type="text" class="form-control" spellcheck="false" placeholder="{{placeholder}}" name="query">
       <small class="form-text text-muted">Entrez les premières lettres de votre recherche</small>
     </div>
     <button type="submit" class="btn btn-primary">Rechercher</button>

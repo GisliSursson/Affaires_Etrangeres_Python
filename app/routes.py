@@ -2,6 +2,7 @@ import folium
 import re
 import ast
 import json
+import os
 
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, current_user, logout_user
@@ -28,6 +29,7 @@ def recherche():
     # Route permettant l'affichage de la page recherche généraliste
     # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en vas de valeur nulle.
     type_recherche = request.args.get("type_voulu", None)
+    # chemin_json = send_from_directory(os.path.join(chemin_actuel, 'modeles'), 'codes_json.json')
     if type_recherche == 'pays':
         type = type_recherche
         placeholder = 'Brésil'
@@ -55,15 +57,18 @@ def resultats_ville():
         # Exécution de la recherche
         results = s.search(q, terms=True)
         # S'il n'y a qu'une seule représentation diplomatique dans la ville
-        if len(results) == 1:
+        if not results:
+            flash("Erreur : la ville demandée ('{keyword}') n'existe pas !".format(keyword=keyword), "error")
+            return redirect("/")
+        elif len(results) == 1:
             print(results)
             result_ville = results.fields(0)
             a_afficher = result_ville.get("content")
             # Traitement de la chaîne renvoyée par whoosh pour la transformer en dict. On utilise pas le package
             # JSON car l'encodage de whoosh ne permet pas la conversion en JSON.
             a_afficher = ast.literal_eval(a_afficher)
-            print(type(a_afficher))
-            print(a_afficher)
+            # print(type(a_afficher))
+            # print(a_afficher)
             a_afficher = dict(a_afficher)
             html = "<table>"
             for key, value in a_afficher.items():

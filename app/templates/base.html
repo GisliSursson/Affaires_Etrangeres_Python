@@ -3,8 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <title>{{titre}} {% block titre %}{% endblock %}</title>
+
         {% include "css.html" %}
         <style>
+
             body {
                 background: url('https://images.pexels.com/photos/227433/pexels-photo-227433.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat center center fixed;
                 -webkit-background-size: cover;
@@ -16,8 +18,12 @@
                   color: black;
                   background-color: red;
                 }
+                {% block css %}
+                {% endblock %}
         </style>
         {% include "metadata.html" %}
+        {% block head %}
+        {% endblock %}
     </head>
    
     <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
@@ -65,6 +71,7 @@
               </div>
             </div>
           </div>
+     {% block autocomplete %}
+     {% endblock %}
     </body>
-    {% include "js.html" %}
 </html>
