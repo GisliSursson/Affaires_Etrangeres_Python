@@ -63,9 +63,10 @@ Dans le dossier contenant le projet, lancez
 python3 run.py 
 ```
 
-### Déclaration de licences
+### Droits et licences
 
 L'image de fond, issue du site [Pexel](https://www.pexels.com/fr-fr/), est libre de réutilisation.
+La liste des codes pays à deux lettres (ISO 3166-1 alpha-2) est issue de [cette](http://documentation.abes.fr/sudoc/formats/CodesPays.htm) source. 
 
 
 
