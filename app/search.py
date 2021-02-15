@@ -34,3 +34,4 @@ writer.commit()
 
 # Variable finale pour import relatif
 indexation = index
+

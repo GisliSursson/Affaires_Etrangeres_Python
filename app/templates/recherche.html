@@ -2,12 +2,13 @@
 {% block titre %}
 Recherche
 {% endblock %}
-{% if type == 'pays' %}
+
 {% block head %}
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+
 // L'autocomplete ne fonctionne qu'avec la liste en local
   $( function() {
     var availableTags = ["Afghanistan", "Afrique du Sud", "Åland, Îles", "Albanie", "Algérie", "Allemagne", "Andorre",
@@ -49,15 +50,15 @@ Recherche
     "Uruguay", "Vanuatu", "Vatican", "Venezuela (République bolivarienne du)", "Viet Nam", "Viet Nam (Sud)",
     "Wallis et Futuna", "Yémen", "Yougoslavie", "Zaïre", "Zambie", "Zimbabwe"];
 
-    $( "#autocomp" ).autocomplete({
+ $( "#autocomp" ).autocomplete({
       source: availableTags
     });
   } );
 </script>
 {% endblock %}
-{% endif %}
+
 {% block body %}
-<form autocomplete="off" action="{{ url_for('resultats') }}" method="GET" id="the-basics">
+<form autocomplete="off" action="{{ url_for('resultats') }}" method="GET">
     <div class="form-group search">
       <label>Vous avez choisi le type de recherche : {{type}} </label>
       <input id= "autocomp" type="text" class="form-control" spellcheck="false" placeholder="{{placeholder}}" name="query">

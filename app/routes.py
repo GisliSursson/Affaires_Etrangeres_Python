@@ -66,7 +66,7 @@ def resultats_ville():
             flash("Erreur : la ville demandée ('{keyword}') n'existe pas !".format(keyword=keyword), "error")
             return redirect("/")
         elif len(results) == 1:
-            print(results)
+            # print(results)
             result_ville = results.fields(0)
             a_afficher = result_ville.get("content")
             # Traitement de la chaîne renvoyée par whoosh pour la transformer en dict. On utilise pas le package

@@ -3,11 +3,56 @@
 Recherche
 {% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+
+// L'autocomplete ne fonctionne qu'avec la liste en local
+  $( function() {
+    var availableTags = ["Kaboul", "Pretoria", "Cape Town", "Johannesburg", "Tirana", "Alger", "Annaba", "Oran",
+    "Berlin", "Düsseldorf", "Francfort", "Hambourg", "Munich", "Sarrebruck", "Stuttgart", "Andorre-la-Vieille",
+    "Luanda", "Castries", "None", "Djeddah", "Riyad", "Buenos Aires", "Erevan", "Canberra", "Sydney", "Vienne",
+    "BAKOU", "Panama", "Manama", "Dacca", "Bruxelles", "Guatemala", "Cotonou", "New Delhi", "Calcutta",
+    "Minsk", "Rangoun", "La Paz", "Sarajevo", "Gaborone", "Brasilia - DF", "Recife", "Rio de Janeiro",
+    "São Paulo", "Brasilia", "None", "Sofia", "Ouagadougou", " Ouagadougou", "Bujumbura", "Phnom Penh",
+    "Yaoundé", "Douala", "Ottawa", "Montréal", "Québec", "Toronto", "Vancouver", "Moncton", "None", "Santiago",
+    "None", "Shanghai", "Shenyang", "Hong Kong", "Wuhan", "Beijing", "Chengdu", "Canton", "Nicosie", "Bogotá",
+    "Bogota", "Moroni", "Brazzaville", "Pointe-Noire", "None", "Séoul", "San José", "Abidjan", "Zagreb",
+    "La Havane", "Copenhague", "Djibouti", "Le Caire", "Mancheya - Alexandrie", "Abou Dabi", "Dubaï", "Quito",
+    "Asmara", "Madrid", "Barcelone", "Bilbao", "Tallinn", "Washington D.C.", "Atlanta", "Boston", "Chicago",
+    "Houston", "New Orleans, LA ", "Los Angeles", "Miami", "New York", "San Francisco", "Washington",
+    "Addis Abeba", "Helsinki", "Libreville", "Dakar", "None", "Brufut", "Tbilissi", "Accra", "Athènes",
+    "Thessalonique", " Athènes", "Guatemala ciudad", "Conakry", "Malabo", "Bissao", "Paramaribo",
+    "Port-au-Prince", "Tegucigalpa", " Budapest", "Wellington", "Suva", "Port-Vila", "Mumbai",
+    "Pondichéry", "Bangalore", "Jakarta", "Bagdad", "Erbil", "Téhéran", "Dublin", "Reykjavik", "Tel-Aviv",
+    "Haïfa", "Jérusalem", "Rome", "Naples", "Milan", "Kingston", "Tokyo", "Kyoto", "Amman", "Nour-Soultan",
+    "Almaty", "Nairobi", "Bichkek", "Pristina", "Koweït", "Vientiane", "Riga", "Beyrouth", "Monrovia",
+    "Tripoli", "Vilnius", "Luxembourg", "Skopje", "Antananarivo", "Kuala Lumpur", "Colombo", "Bamako",
+    "La Valette", "Rabat - Chellah", "Agadir", "Casablanca", "Marrakech", "Tanger", "Fès", "Rabat",
+    "Port-Louis", "Nouakchott", "Mexico", "Chisinau", "Monaco", "Oulan Bator", "Podgorica", "Maputo",
+    "Windhoek", "Katmandou", "Managua", "Niamey", "Abuja", "Lagos", "Oslo", "Mascate", "Kampala",
+    "Tachkent", "Islamabad", "Karachi", "Port Moresby", "Asunción", "La Haye", "Amsterdam", "Lima",
+    "Makati city", "Manille", "Varsovie", "Cracovie", "Lisbonne", "Doha", "Bangui", "Kinshasa",
+    "Saint-Domingue", "Prague", "Bucarest", "Londres", "Edimbourg", "Moscou", "Ekaterinbourg",
+    "Saint-Pétersbourg", "Kigali", "San Salvador", "Belgrade", "Mahé", "Singapour", "Bratislava", "Ljubljana",
+    "Khartoum", "Djouba", "Stockholm", "Berne", "Zurich", "Genève", "Damas", "Douchanbé", "Taipei",
+    "Dar es Salaam  ", "N'Djamena", "Bangkok", "Lomé", "Port d'Espagne", "Tunis", "Achgabat", "Ankara",
+    "Istanbul", "Kiev", "Montevideo", "Caracas", "Hanoï", "Ho Chi-Minh Ville", "Lusaka", "Harare"];
+
+ $( "#autocomp" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
+{% endblock %}
+
 {% block body %}
 <form action="{{ url_for('resultats_ville') }}" method="GET">
     <div class="form-group">
       <label>Vous avez choisi le type de recherche : {{type}} </label>
-      <input type="search" class="form-control" aria-describedby="search" placeholder="{{placeholder}}" name="query">
+      <input id= "autocomp" type="search" class="form-control" aria-describedby="search" placeholder="{{placeholder}}" name="query">
       <small class="form-text text-muted">Entrez les premières lettres de votre recherche</small>
     </div>
     <button type="submit" class="btn btn-primary">Rechercher</button>
