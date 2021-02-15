@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block titre %}A propos{%endblock%}
+
+{% block body %}
+
+<p>Application réalisée par Victor Meynaud dans le cadre du devoir final du cours de Python de M. Clérice à l'Ecole
+nationale des chartes (année universitaire 2020-2021).
+
+Les données sources sont issues du site <a href="https://www.data.gouv.fr/fr/organizations/ministere-des-affaires-etrangeres-et-du-developpement-international/">data.gouv.fr</a>.</p>
+
+<footer class="bg-light text-center text-lg-start">
+    <div class="text-center p-3">
+        <a href="{{url_for('accueil')}}">Retour à l'accueil</a>
+      </div>
+    </footer>
+{% endblock %}

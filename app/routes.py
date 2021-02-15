@@ -17,6 +17,11 @@ from whoosh.qparser import QueryParser
 
 pays_existe_plus = ["su", "yu", "zr", "cs"]
 
+@app.route("/a_propos")
+def a_propos():
+    """ Route permettant l'affichage d'une page à propos
+        """
+    return render_template("a_propos.html")
 
 @app.route("/")
 def accueil():
