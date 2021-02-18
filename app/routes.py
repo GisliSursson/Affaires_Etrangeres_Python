@@ -5,7 +5,7 @@ import json
 import os
 
 from flask import render_template, request, flash, redirect
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
 from app.modeles.utilisateurs import User
 from .app import app, login, users
 from .modeles.data_dict import codes_dict as data
@@ -14,7 +14,7 @@ from .search import indexation, schema
 from whoosh import query
 from whoosh.qparser import QueryParser
 
-
+# Variables globales utilisables par toutes les fonctions
 pays_existe_plus = ["su", "yu", "zr", "cs"]
 
 @app.route("/a_propos")
@@ -30,6 +30,7 @@ def accueil():
     return render_template("accueil.html", titre="Apli réseau diplo.")
 
 @app.route("/recherche")
+@login_required
 def recherche():
     # Route permettant l'affichage de la page recherche généraliste
     # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en vas de valeur nulle.
@@ -45,14 +46,29 @@ def recherche():
         return render_template("recherche_ville.html", type=type, placeholder=placeholder)
 
 @app.route("/profil")
+@login_required
 def profil():
-    liste_histo = current_user.user_historique.split(";")
-    return render_template("profil.html", current_user=current_user, liste_histo=liste_histo[:-1])
+    histo = current_user.user_historique.split(";")
+    print(histo)
+    return render_template("profil.html", current_user=current_user, histo=histo)
 
 # Définition de la fonction pour la recherche par ville
 @app.route("/resultats_ville")
+@login_required
 def resultats_ville():
     keyword = request.args.get("query", None)
+
+    # Ecriture dans l'historique (pour les villes)
+    if current_user.is_authenticated is True:
+        utilisateur = User.query.filter_by(user_id=current_user.user_id).first()
+        # Création de l'historique s'il n'existe pas
+        if utilisateur.user_historique is None:
+            utilisateur.user_historique = keyword + ";"
+        # Ajout à l'historique sinon
+        else:
+            utilisateur.user_historique += keyword + ";"
+        users.session.commit()
+
     myMap = folium.Map()
     # Definition de là où on cherche dans l'indexation
     qp = QueryParser("city", schema=schema)
@@ -128,6 +144,7 @@ def resultats_ville():
 
 # Définition de la fonction pour la recherche par pays
 @app.route("/resultats")
+@login_required
 def resultats():
     query = request.args.get("query", None)
     code = (data[query]).lower()
@@ -160,10 +177,15 @@ def resultats():
         popup = folium.Popup(html, min_width=800,max_width=800)
         folium.Marker(location=[element_liste["latitude"], element_liste["longitude"]], tooltip=element_liste["nom"],
                       popup=popup).add_to(myMap)
-    # Ecriture dans l'historique
+    # Ecriture dans l'historique (pour les pays)
     if current_user.is_authenticated is True:
         utilisateur = User.query.filter_by(user_id=current_user.user_id).first()
-        utilisateur.user_historique += query + ";"
+        # Création de l'historique s'il n'existe pas
+        if utilisateur.user_historique is None:
+            utilisateur.user_historique = query + ";"
+        # Ajout à l'historique sinon
+        else:
+            utilisateur.user_historique += query + ";"
         users.session.commit()
 
     #query = request.args.get("query", None)

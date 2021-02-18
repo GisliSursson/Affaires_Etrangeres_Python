@@ -3,7 +3,14 @@
 
 {% block body %}
 <h1 class="display-3">Application "Réseau-diplo"</h1>
-<h4>Cette application a pour but de permettre une navigation aisée dans les données du réseau diplomatique français et d'en proposer des représentations cartographiques.</h2> 
+<h2>Cette application a pour but de permettre une navigation aisée dans les données du réseau diplomatique français et d'en proposer des représentations cartographiques.</h2>
+
+{% if not current_user.is_authenticated %}
+<div class="alert alert-primary" role="alert">
+  Attention : pour utiliser la fonction recherche, vous devez être inscrit et connecté!
+</div>
+{% endif %}
+
 <h6>Choisissez votre type de recherche :</h6>
 
   <form action="{{ url_for('recherche') }}" method="GET">
