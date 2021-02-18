@@ -2,7 +2,8 @@ import folium
 import re
 import ast
 import json
-import os
+import numpy
+import pandas as pd
 
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, current_user, logout_user, login_required
@@ -112,6 +113,8 @@ def resultats_ville():
 
         # S'il y a plusieurs représentations diplomatiques dans la ville
         elif len(results) > 1:
+            # Liste qui servira à la déterminsation du niveau de zoom optimal
+            ensemble_coord = []
             # "Results" est un whoosh.searching.Results qui contient plusieurs "hits"
             for result_element in results:
                 # Transformation du whoosh.searching.Hit en dict
@@ -139,6 +142,18 @@ def resultats_ville():
                 folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                               tooltip=a_afficher["nom"],
                               popup=popup).add_to(myMap)
+                ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
+            # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
+            # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
+            ensemble_coord = numpy.array(ensemble_coord)
+            data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
+            print(ensemble_coord)
+            print(data_frame)
+            sw = data_frame[['Lat', 'Long']].min().values.tolist()
+            ne = data_frame[['Lat', 'Long']].max().values.tolist()
+            print(sw)
+            print(ne)
+            myMap.fit_bounds([sw, ne])
         return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
 
 
@@ -160,6 +175,8 @@ def resultats():
         flash("Erreur : le territoire demandé ('{query}') n'a pas de représentation diplomatique française !".format(query=query), "error")
         return redirect("/")
     myMap = folium.Map()
+    # Liste qui servira à la déterminsation du niveau de zoom optimal
+    ensemble_coord = []
     for element_liste in db[code]:
         html = "<table>"
         for key, value in element_liste.items():
@@ -177,6 +194,18 @@ def resultats():
         popup = folium.Popup(html, min_width=800,max_width=800)
         folium.Marker(location=[element_liste["latitude"], element_liste["longitude"]], tooltip=element_liste["nom"],
                       popup=popup).add_to(myMap)
+        ensemble_coord.append([element_liste["latitude"], element_liste["longitude"]])
+    # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
+    # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
+    ensemble_coord = numpy.array(ensemble_coord)
+    data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
+    print(ensemble_coord)
+    print(data_frame)
+    sw = data_frame[['Lat', 'Long']].min().values.tolist()
+    ne = data_frame[['Lat', 'Long']].max().values.tolist()
+    print(sw)
+    print(ne)
+    myMap.fit_bounds([sw, ne])
     # Ecriture dans l'historique (pour les pays)
     if current_user.is_authenticated is True:
         utilisateur = User.query.filter_by(user_id=current_user.user_id).first()
