@@ -20,6 +20,8 @@ A chaque recherche un niveau de zoom optimal est calculé, c'est-à-dire le nive
 
 L'application gère également des comptes utilisateurs (inscription, connexion, mise à jour des données utilisateur, historique des recherches). 
 
+On a aussi prévu une gestion des erreurs causées par la nature des données de départ (par exemple l'entrée dans le champ de recherche d'un pays qui n'existe plus).
+
 ## Captures d'écran
 
 Exemple de recherche pour un pays : 
