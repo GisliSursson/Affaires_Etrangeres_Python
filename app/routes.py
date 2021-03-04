@@ -12,10 +12,9 @@ from .app import app, login, users
 from .modeles.data_dict import codes_dict as data
 from .modeles.data_db import data as db
 from .search import indexation, schema
-from whoosh import query
 from whoosh.qparser import QueryParser
 
-# Variables globales utilisables par toutes les fonctions
+# Variable globales utilisables par toutes les fonctions
 pays_existe_plus = ["su", "yu", "zr", "cs"]
 
 @app.route("/a_propos")
@@ -33,12 +32,13 @@ def accueil():
 @app.route("/recherche")
 @login_required
 def recherche():
-    # Route permettant l'affichage de la page recherche généraliste
-    # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en vas de valeur nulle.
+    # Route permettant l'affichage de la page recherche selon le mode souhaité
+    # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en cas de valeur nulle.
     type_recherche = request.args.get("type_voulu", None)
     # chemin_json = send_from_directory(os.path.join(chemin_actuel, 'modeles'), 'codes_json.json')
     if type_recherche == 'pays':
         type = type_recherche
+        # Placeholder choisi arbitrairement
         placeholder = 'Brésil'
         return render_template("recherche.html", type=type, placeholder=placeholder)
     elif type_recherche == 'ville':
@@ -92,6 +92,7 @@ def resultats_ville():
             # print(type(a_afficher))
             # print(a_afficher)
             a_afficher = dict(a_afficher)
+            # Construction du HTML qui sera affiché dans les bulles de la cartes
             html = "<table>"
             for key, value in a_afficher.items():
                 if type(value) != dict:
@@ -147,12 +148,8 @@ def resultats_ville():
             # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
             ensemble_coord = numpy.array(ensemble_coord)
             data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
-            print(ensemble_coord)
-            print(data_frame)
             sw = data_frame[['Lat', 'Long']].min().values.tolist()
             ne = data_frame[['Lat', 'Long']].max().values.tolist()
-            print(sw)
-            print(ne)
             myMap.fit_bounds([sw, ne])
         return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
 
@@ -175,7 +172,7 @@ def resultats():
         flash("Erreur : le territoire demandé ('{query}') n'a pas de représentation diplomatique française !".format(query=query), "error")
         return redirect("/")
     myMap = folium.Map()
-    # Liste qui servira à la déterminsation du niveau de zoom optimal
+    # Liste qui servira à la détermination du niveau de zoom optimal
     ensemble_coord = []
     for element_liste in db[code]:
         html = "<table>"
@@ -199,12 +196,12 @@ def resultats():
     # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
     ensemble_coord = numpy.array(ensemble_coord)
     data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
-    print(ensemble_coord)
-    print(data_frame)
+    # print(ensemble_coord)
+    # print(data_frame)
     sw = data_frame[['Lat', 'Long']].min().values.tolist()
     ne = data_frame[['Lat', 'Long']].max().values.tolist()
-    print(sw)
-    print(ne)
+    # print(sw)
+    # print(ne)
     myMap.fit_bounds([sw, ne])
     # Ecriture dans l'historique (pour les pays)
     if current_user.is_authenticated is True:
@@ -216,11 +213,6 @@ def resultats():
         else:
             utilisateur.user_historique += query + ";"
         users.session.commit()
-
-    #query = request.args.get("query", None)
-    #code = (data[query]).lower()
-    #dico = db[code]
-    #nom = query
     return render_template("resultats.html", myMap=myMap._repr_html_(), query=query)
 
 @app.route("/register", methods=["GET", "POST"])
@@ -266,6 +258,8 @@ def connexion():
             flash("Les identifiants n'ont pas été reconnus", "error")
 
     return render_template("connexion.html")
+
+# Indication à Flask de la page utilisée pour faire les connexions
 login.login_view = 'connexion'
 
 

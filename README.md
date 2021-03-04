@@ -1,18 +1,37 @@
 # "Réseau-diplo." : application de navigation dans les données du réseau diplomatique français
 
-Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecole nationale des chartes.
+Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecole nationale des chartes (année universitaire 2020-2021).
 
 ## Présentation
 
+Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le Ministère de l'Europe et des Affaires Etrangères et en propose des représentations cartographiques. 
+
 ## Fonctionnalités
 
-L'application permet de rechercher dans les données par pays et via une recherche libre. 
+L'application permet de rechercher dans les données par pays et par ville. 
 
-La recherche libre s'effectue via un moteur de recherche plein texte *pure Python*. La recherche plein texte renvoie des résultats pour les pays ou les villes. La recherche sur les villes n'est pas limitée aux capitales et peut également renvoyer des villes où se trouvent des représentations consulaires. 
+Par pays, la recherche s'effectue via une clef de dictionnaire. Les données affichées sont une représentation HTML générée dynamiquement à partir des données correspondant à la recherche.
 
-Les résultats de recherche sont présentés sous forme de cartes. 
+La recherche par ville s'effectue via un moteur de recherche plein texte *pure Python*. Une telle méthode de recherche sur les villes permet de ne pas se limiter aux capitales et permet également d'accéder aux villes où se trouvent des représentations consulaires. 
+
+Les résultats de recherche sont présentés sous forme de points sur une carte. Chaque point contient les données correspondant au poste diplomatique en question (nom, adresse, réseaux sociaux...)
+
+A chaque recherche un niveau de zoom optimal est calculé, c'est-à-dire le niveau de zoom le plus bas contenant tous les points affichés. 
 
 L'application gère également des comptes utilisateurs (inscription, connexion, mise à jour des données utilisateur, historique des recherches). 
+
+## Captures d'écran
+
+Exemple de recherche pour un pays : 
+
+![pays](./images/pays.png)
+
+Exemple de recherche pour une ville : 
+
+![ville](./images/ville.png)
+
+Exemple de données affichées sur un point de carte : 
+![donnes](./images/donnees.png)
 
 ## Installation et lancement
 
@@ -68,6 +87,7 @@ python3 run.py
 La base de données au format JSON est issue de [data.gouv.fr](https://www.data.gouv.fr/).
 L'image de fond, issue du site [Pexel](https://www.pexels.com/fr-fr/), est libre de réutilisation.
 La liste des codes pays à deux lettres (ISO 3166-1 alpha-2) est issue de [cette](http://documentation.abes.fr/sudoc/formats/CodesPays.htm) source. 
+Le projet utilise le framework CSS/Javascript open source [Bootstrap](https://getbootstrap.com/).
 
 
 

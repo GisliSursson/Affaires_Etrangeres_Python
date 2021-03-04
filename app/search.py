@@ -1,5 +1,5 @@
 import os.path
-import json
+# import json
 
 from whoosh.fields import Schema, TEXT
 from whoosh.index import create_in, open_dir
@@ -24,7 +24,6 @@ writer = index.writer()
 # Ajout des documents indexés selon les villes. Le contenu est le nom de la représentation diplomatique concernée.
 for key, value in db.items():
     for element in value:
-        # Les chemins sont bons
         writer.add_document(city=u"{nom_ville}".format(nom_ville=element.get("ville")),
                             name=u"{nom_representation}".format(nom_representation=element.get("nom")),
                             content=u"{contenu}".format(contenu=element.copy()))
