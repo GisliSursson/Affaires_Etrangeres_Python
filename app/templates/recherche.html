@@ -10,7 +10,7 @@ Recherche
 <script>
 
 // L'autocomplete ne fonctionne qu'avec la liste en local
-  $( function() {
+$( function() {
     var availableTags = ["Afghanistan", "Afrique du Sud", "Åland, Îles", "Albanie", "Algérie", "Allemagne", "Andorre",
     "Angola", "Anguilla", "Antarctique", "Antigua et Barbuda", "Antilles néerlandaises", "Arabie Saoudite", "Argentine",
     "Arménie", "Aruba", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahrein", "Bangladesh", "Barbade", "Bélarus",
@@ -50,6 +50,7 @@ Recherche
     "Uruguay", "Vanuatu", "Vatican", "Venezuela (République bolivarienne du)", "Viet Nam", "Viet Nam (Sud)",
     "Wallis et Futuna", "Yémen", "Yougoslavie", "Zaïre", "Zambie", "Zimbabwe"];
 
+
  $( "#autocomp" ).autocomplete({
       source: availableTags
     });
@@ -64,7 +65,7 @@ Recherche
       <input id= "autocomp" type="text" class="form-control" spellcheck="false" placeholder="{{placeholder}}" name="query">
       <small class="form-text text-muted">Entrez les premières lettres de votre recherche</small>
     </div>
-    <button type="submit" class="btn btn-primary">Rechercher</button>
+    <button onclick="fonctionVerif()" type="submit" class="btn btn-primary">Rechercher</button>
   </form>
   <footer class="bg-light text-center text-lg-start">
     <div class="text-center p-3">
@@ -72,3 +73,4 @@ Recherche
       </div>
     </footer>
 {% endblock %}
+

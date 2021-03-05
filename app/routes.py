@@ -6,7 +6,7 @@ import numpy
 import pandas as pd
 import random
 
-from flask import render_template, request, flash, redirect
+from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_user, current_user, logout_user, login_required
 from app.modeles.utilisateurs import User
 from .app import app, login, users
@@ -87,10 +87,10 @@ def resultats_ville():
     with indexation.searcher() as s:
         # Exécution de la recherche
         results = s.search(q, terms=True)
-        # S'il n'y a qu'une seule représentation diplomatique dans la ville
-        if not results:
-            flash("Erreur : la ville demandée ('{keyword}') n'existe pas !".format(keyword=keyword), "error")
+        if len(results) == 0:
+            flash("Erreur ! Vous avez entré : '{keyword}'. Merci de n'utiliser uniquement les valeurs proposées par l'autocomplétion".format(keyword=keyword), "error")
             return redirect("/")
+        # S'il n'y a qu'une seule représentation diplomatique dans la ville
         elif len(results) == 1:
             # Liste qui servira à la déterminsation du niveau de zoom optimal
             ensemble_coord = []
@@ -122,7 +122,7 @@ def resultats_ville():
                           tooltip=a_afficher["nom"],
                           popup=popup).add_to(myMap)
             ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
-            #return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
+
 
         # S'il y a plusieurs représentations diplomatiques dans la ville
         elif len(results) > 1:
@@ -180,7 +180,12 @@ def resultats_ville():
 @login_required
 def resultats():
     query = request.args.get("query", None)
-    code = (data[query]).lower()
+    try:
+        code = (data[query]).lower()
+    except:
+        flash("Erreur ! Vous avez entré : '{keyword}'. Merci de n'utiliser uniquement les valeurs proposées par l'autocomplétion".format(
+                keyword=query), "error")
+        return redirect("/")
     # Test pour les erreurs prévues par rapport aux codes pays du csv
     # Test pour les pays qui n'existent plus
     if code in pays_existe_plus:
