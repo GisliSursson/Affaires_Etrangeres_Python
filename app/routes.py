@@ -95,6 +95,11 @@ def resultats_ville():
             html = "<table>"
             for key, value in a_afficher.items():
                 if type(value) != dict:
+                    # Modification des URL pour ouverture dans un nouvel onglet
+                    if isinstance(value, str) and "<a" in value:
+                        value = value.replace("<a", "")
+                        ajout = "<a target='_blank''"
+                        value = ajout + value
                     html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                 if type(value) == dict:
                     # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
@@ -103,7 +108,11 @@ def resultats_ville():
                     # regex non greedy
                     socials = re.findall('<a.+?</a>', string)
                     for index, element in enumerate(list(set(socials))):
-                        html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index + 1) + element + '</td></tr>'
+                        # Modification de l'URL présent dans les données sources pour ouverture dans un nouvel onglet
+                        element = element.replace("<a", "")
+                        ajout = "<a target='_blank''"
+                        element = ajout + element
+                        html = html + '<tr><td>rés. soc. n°{index} :</td><td>'.format(index= index + 1) + element +'</td></tr>'
             html = html + "</table>"
             popup = folium.Popup(html, min_width=800, max_width=800)
             folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
@@ -129,6 +138,11 @@ def resultats_ville():
                 html = "<table>"
                 for key, value in a_afficher.items():
                     if type(value) != dict:
+                        # Modification des URL pour ouverture dans un nouvel onglet
+                        if isinstance(value, str) and "<a" in value:
+                            value = value.replace("<a", "")
+                            ajout = "<a target='_blank''"
+                            value = ajout + value
                         html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                     if type(value) == dict:
                         # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
@@ -137,6 +151,10 @@ def resultats_ville():
                         # regex non greedy
                         socials = re.findall('<a.+?</a>', string)
                         for index, element in enumerate(list(set(socials))):
+                            # Modification de l'URL présent dans les données sources pour ouverture dans un nouvel onglet
+                            element = element.replace("<a", "")
+                            ajout = "<a target='_blank''"
+                            element = ajout + element
                             html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index + 1) + element + '</td></tr>'
                 html = html + "</table>"
                 # Modification des coordonnées à afficher si deux points sur la carte ont strictement les mêmes coordonnées
@@ -203,6 +221,11 @@ def resultats():
         html = "<table>"
         for key, value in element_liste.items():
             if type(value) != dict:
+                # Modification des URL pour ouverture dans un nouvel onglet
+                if isinstance(value, str) and "<a" in value:
+                    value = value.replace("<a", "")
+                    ajout = "<a target='_blank''"
+                    value = ajout + value
                 html = html + '<tr><td>'+ str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
             if type(value) == dict:
                 # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
@@ -211,6 +234,10 @@ def resultats():
                 # regex non greedy
                 socials = re.findall('<a.+?</a>', string)
                 for index, element in enumerate(list(set(socials))):
+                    # Modification de l'URL présent dans les données sources pour ouverture dans un nouvel onglet
+                    element = element.replace("<a", "")
+                    ajout = "<a target='_blank''"
+                    element = ajout + element
                     html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index+1) + element + '</td></tr>'
         html = html + "</table>"
         # Modification des coordonnées dans le cas où il y a une ambassade et un consulat strictement au même endroit

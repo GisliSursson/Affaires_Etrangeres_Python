@@ -52,6 +52,9 @@ Recherche
 <form action="{{ url_for('resultats_ville') }}" method="GET">
     <div class="form-group">
       <label>Vous avez choisi le type de recherche : {{type}} </label>
+        <div class="alert alert-warning" role="alert">
+  Merci d'utiliser les valeurs proposées par l'autocomplétion.
+        </div>
       <input id= "autocomp" type="search" class="form-control" aria-describedby="search" placeholder="{{placeholder}}" name="query">
       <small class="form-text text-muted">Entrez les premières lettres de votre recherche</small>
     </div>
