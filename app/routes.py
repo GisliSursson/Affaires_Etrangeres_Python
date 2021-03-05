@@ -21,7 +21,15 @@ pays_existe_plus = ["su", "yu", "zr", "cs"]
 def a_propos():
     """ Route permettant l'affichage d'une page à propos
         """
-    return render_template("a_propos.html")
+    # Calcul des statistiques sur l'appli à afficher dans la page "à propos"
+    nb_inscrits = User.query.count()
+    nb_recherches = 0
+    for user in User.query.all():
+        histo = str(user.user_historique)
+        histo = histo.split(";")
+        nb_rech_user = len(histo)
+        nb_recherches += nb_rech_user
+    return render_template("a_propos.html", nb_inscrits=nb_inscrits, nb_recherches=nb_recherches)
 
 @app.route("/")
 def accueil():
@@ -50,7 +58,7 @@ def recherche():
 @login_required
 def profil():
     histo = current_user.user_historique.split(";")
-    print(histo)
+    # print(histo)
     return render_template("profil.html", current_user=current_user, histo=histo)
 
 # Définition de la fonction pour la recherche par ville
@@ -83,6 +91,8 @@ def resultats_ville():
             flash("Erreur : la ville demandée ('{keyword}') n'existe pas !".format(keyword=keyword), "error")
             return redirect("/")
         elif len(results) == 1:
+            # Liste qui servira à la déterminsation du niveau de zoom optimal
+            ensemble_coord = []
             # print(results)
             result_ville = results.fields(0)
             a_afficher = result_ville.get("content")
@@ -110,7 +120,7 @@ def resultats_ville():
             folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                           tooltip=a_afficher["nom"],
                           popup=popup).add_to(myMap)
-            return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
+            #return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
 
         # S'il y a plusieurs représentations diplomatiques dans la ville
         elif len(results) > 1:
@@ -143,15 +153,15 @@ def resultats_ville():
                 folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                               tooltip=a_afficher["nom"],
                               popup=popup).add_to(myMap)
-                ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
-            # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
-            # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
-            ensemble_coord = numpy.array(ensemble_coord)
-            data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
-            sw = data_frame[['Lat', 'Long']].min().values.tolist()
-            ne = data_frame[['Lat', 'Long']].max().values.tolist()
-            myMap.fit_bounds([sw, ne])
-        return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
+        ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
+        # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
+        # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
+        ensemble_coord = numpy.array(ensemble_coord)
+        data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
+        sw = data_frame[['Lat', 'Long']].min().values.tolist()
+        ne = data_frame[['Lat', 'Long']].max().values.tolist()
+        myMap.fit_bounds([sw, ne])
+    return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
 
 
 # Définition de la fonction pour la recherche par pays
