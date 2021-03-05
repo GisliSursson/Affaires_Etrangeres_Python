@@ -4,6 +4,7 @@ import ast
 import json
 import numpy
 import pandas as pd
+import random
 
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, current_user, logout_user, login_required
@@ -120,6 +121,7 @@ def resultats_ville():
             folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                           tooltip=a_afficher["nom"],
                           popup=popup).add_to(myMap)
+            ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
             #return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
 
         # S'il y a plusieurs représentations diplomatiques dans la ville
@@ -149,11 +151,20 @@ def resultats_ville():
                         for index, element in enumerate(list(set(socials))):
                             html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index + 1) + element + '</td></tr>'
                 html = html + "</table>"
-                popup = folium.Popup(html, min_width=800, max_width=800)
-                folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
-                              tooltip=a_afficher["nom"],
-                              popup=popup).add_to(myMap)
-        ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
+                # Modification des coordonnées à afficher si deux points sur la carte ont strictement les mêmes coordonnées
+                if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
+                    nouv_lat = a_afficher["latitude"] + random.uniform(0.00001, 0.00005)
+                    nouv_long = a_afficher["longitude"] + random.uniform(0.00001, 0.00005)
+                    popup = folium.Popup(html, min_width=800, max_width=800)
+                    folium.Marker(location=[nouv_lat, nouv_long], tooltip=a_afficher["nom"],
+                                      popup=popup).add_to(myMap)
+                else:
+                    popup = folium.Popup(html, min_width=800, max_width=800)
+                    folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
+                                      tooltip=a_afficher["nom"],
+                                      popup=popup).add_to(myMap)
+                ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
+                print(ensemble_coord)
         # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
         # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
         ensemble_coord = numpy.array(ensemble_coord)
@@ -198,9 +209,17 @@ def resultats():
                 for index, element in enumerate(list(set(socials))):
                     html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index+1) + element + '</td></tr>'
         html = html + "</table>"
-        popup = folium.Popup(html, min_width=800,max_width=800)
-        folium.Marker(location=[element_liste["latitude"], element_liste["longitude"]], tooltip=element_liste["nom"],
+        # Modification des coordonnées dans le cas où il y a une ambassade et un consulat strictement au même endroit
+        if [element_liste["latitude"], element_liste["longitude"]] in ensemble_coord:
+            nouv_lat = element_liste["latitude"] + random.uniform(0.00001, 0.00005)
+            nouv_long = element_liste["longitude"] + random.uniform(0.00001, 0.00005)
+            popup = folium.Popup(html, min_width=800, max_width=800)
+            folium.Marker(location=[nouv_lat, nouv_long], tooltip=element_liste["nom"],
                       popup=popup).add_to(myMap)
+        else:
+            popup = folium.Popup(html, min_width=800,max_width=800)
+            folium.Marker(location=[element_liste["latitude"], element_liste["longitude"]], tooltip=element_liste["nom"],
+                          popup=popup).add_to(myMap)
         ensemble_coord.append([element_liste["latitude"], element_liste["longitude"]])
     # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
     # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
