@@ -67,18 +67,6 @@ def profil():
 @login_required
 def resultats_ville():
     keyword = request.args.get("query", None)
-
-    # Ecriture dans l'historique (pour les villes)
-    if current_user.is_authenticated is True:
-        utilisateur = User.query.filter_by(user_id=current_user.user_id).first()
-        # Création de l'historique s'il n'existe pas
-        if utilisateur.user_historique is None:
-            utilisateur.user_historique = keyword + ";"
-        # Ajout à l'historique sinon
-        else:
-            utilisateur.user_historique += keyword + ";"
-        users.session.commit()
-
     myMap = folium.Map()
     # Definition de là où on cherche dans l'indexation
     qp = QueryParser("city", schema=schema)
@@ -172,6 +160,17 @@ def resultats_ville():
         sw = data_frame[['Lat', 'Long']].min().values.tolist()
         ne = data_frame[['Lat', 'Long']].max().values.tolist()
         myMap.fit_bounds([sw, ne])
+
+        # Ecriture dans l'historique (pour les villes)
+        if current_user.is_authenticated is True:
+            utilisateur = User.query.filter_by(user_id=current_user.user_id).first()
+            # Création de l'historique s'il n'existe pas
+            if utilisateur.user_historique is None:
+                utilisateur.user_historique = keyword + ";"
+            # Ajout à l'historique sinon
+            else:
+                utilisateur.user_historique += keyword + ";"
+            users.session.commit()
     return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
 
 
