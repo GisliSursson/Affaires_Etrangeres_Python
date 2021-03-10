@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block titre %}Modification{%endblock%}
+
+{% block body %}
+
+<h1>Modification de vos données</h1>
+<p>Complétez le formulaire et cliquez sur "enregistrer".</p>
+<form class="form" method="POST" action="{{url_for("modification")}}">
+  <div class="form-group row">
+    <label for="register-login" class="col-sm-2 col-form-label">Pseudonyme</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="register-login" name="login" value="{{user.user_login}}">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="register-nom" class="col-sm-2 col-form-label">Nom</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="register-nom" value="{{user.user_nom}}" name="nom">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="register-email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="register-email" value="{{user.user_email}}" name="email">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="register-password" class="col-sm-2 col-form-label">Ancien mot de passe</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="old-password" placeholder="Ancien mot de passe" name="anc_motdepasse">
+    </div>
+  </div>
+<div class="form-group row">
+    <label for="register-password" class="col-sm-2 col-form-label">Nouveau mot de passe</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="register-password" placeholder="Nouveau mot de passe" name="nouv_motdepasse">
+    </div>
+  </div>
+  <div class="form-check">
+  <input class="form-check-input" type="checkbox" id="effacer">
+  <label class="form-check-label" for="effacer">
+    Effacer l'historique
+  </label>
+</div>
+  <div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </div>
+</form>
+{% endblock %}

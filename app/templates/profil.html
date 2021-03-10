@@ -4,7 +4,8 @@
 
 {% block body %}
 
-<h1>Voici les données associées à votre profil :</h1>
+<h1>Données associées à votre profil :</h1>
+<a href="{{url_for('modification')}}">Modifier vos informations</a>
 <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -23,12 +24,18 @@
         </tr>
     </tbody>
   </table>
-
+    {% if pas_histo == True %}
+    <ul class="list-group">
+    <li class="list-group-item disabled">Votre historique de recherche :</li>
+      <li class="list-group-item">{{histo}}</li>
+    </ul>
+    {% else %}
   <ul class="list-group">
     <li class="list-group-item disabled">Votre historique de recherche :</li>
     {% for element in histo %}
       <li class="list-group-item">{{element}}</li>
     {% endfor %}
+      {% endif %}
   </ul>
 
 {% endblock %}

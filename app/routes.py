@@ -6,7 +6,7 @@ import numpy
 import pandas as pd
 import random
 
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 from app.modeles.utilisateurs import User
 from .app import app, login, users
@@ -14,9 +14,11 @@ from .modeles.data_dict import codes_dict as data
 from .modeles.data_db import data as db
 from .search import indexation, schema
 from whoosh.qparser import QueryParser
+from werkzeug.security import check_password_hash, generate_password_hash
 
 # Variable globales utilisables par toutes les fonctions
 pays_existe_plus = ["su", "yu", "zr", "cs"]
+
 
 @app.route("/a_propos")
 def a_propos():
@@ -32,11 +34,13 @@ def a_propos():
         nb_recherches += nb_rech_user
     return render_template("a_propos.html", nb_inscrits=nb_inscrits, nb_recherches=nb_recherches)
 
+
 @app.route("/")
 def accueil():
     """ Route permettant l'affichage d'une page accueil
     """
     return render_template("accueil.html", titre="Apli réseau diplo.")
+
 
 @app.route("/recherche")
 @login_required
@@ -55,12 +59,19 @@ def recherche():
         placeholder = 'Rome'
         return render_template("recherche_ville.html", type=type, placeholder=placeholder)
 
+
 @app.route("/profil")
 @login_required
 def profil():
-    histo = current_user.user_historique.split(";")
-    # print(histo)
-    return render_template("profil.html", current_user=current_user, histo=histo)
+    histo_user = current_user.user_historique
+    if histo_user is None:
+        histo = "Vous n'avez pas d'historique de recherche"
+        pas_histo = True
+    else:
+        histo = current_user.user_historique.split(";")
+        pas_histo = False
+    return render_template("profil.html", current_user=current_user, histo=histo, pas_histo=pas_histo)
+
 
 # Définition de la fonction pour la recherche par ville
 @app.route("/resultats_ville")
@@ -76,22 +87,22 @@ def resultats_ville():
         # Exécution de la recherche
         results = s.search(q, terms=True)
         if len(results) == 0:
-            flash("Erreur ! Vous avez entré : '{keyword}'. Merci de n'utiliser uniquement les valeurs proposées par l'autocomplétion".format(keyword=keyword), "error")
+            flash("Erreur ! Vous avez entré : '{keyword}'. Merci de n'utiliser uniquement les valeurs "
+                  "proposées par l'autocomplétion".format(keyword=keyword), "error")
             return redirect("/")
         # S'il n'y a qu'une seule représentation diplomatique dans la ville
         elif len(results) == 1:
-            # Liste qui servira à la déterminsation du niveau de zoom optimal
+            # Liste qui servira à la détermination du niveau de zoom optimal
             ensemble_coord = []
             # print(results)
             result_ville = results.fields(0)
             a_afficher = result_ville.get("content")
-            # Traitement de la chaîne renvoyée par whoosh pour la transformer en dict. On utilise pas le package
-            # JSON car l'encodage de whoosh ne permet pas la conversion en JSON.
+            # Traitement de la chaîne renvoyée par whoosh pour la transformer en dict.
             a_afficher = ast.literal_eval(a_afficher)
             # print(type(a_afficher))
             # print(a_afficher)
             a_afficher = dict(a_afficher)
-            # Construction du HTML qui sera affiché dans les bulles de la cartes
+            # Construction graduelle du HTML qui sera affiché dans les bulles de la cartes
             html = "<table>"
             for key, value in a_afficher.items():
                 if type(value) != dict:
@@ -120,7 +131,6 @@ def resultats_ville():
                           popup=popup).add_to(myMap)
             ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
 
-
         # S'il y a plusieurs représentations diplomatiques dans la ville
         elif len(results) > 1:
             # Liste qui servira à la déterminsation du niveau de zoom optimal
@@ -145,19 +155,22 @@ def resultats_ville():
                             value = ajout + value
                         html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                     if type(value) == dict:
-                        # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
+                        # Traitement des socials qui peuvent être des nested dict.
+                        # Conversion en str et on va chercher les anchors
                         # en regex (les seules choses intéresantes pour l'utilisateur graphique)
                         string = json.dumps(value)
                         # regex non greedy
                         socials = re.findall('<a.+?</a>', string)
                         for index, element in enumerate(list(set(socials))):
-                            # Modification de l'URL présent dans les données sources pour ouverture dans un nouvel onglet
+                            # Modification de l'URL présent dans les données sources
+                            # pour ouverture dans un nouvel onglet
                             element = element.replace("<a", "")
                             ajout = "<a target='_blank''"
                             element = ajout + element
                             html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index + 1) + element + '</td></tr>'
                 html = html + "</table>"
-                # Modification des coordonnées à afficher si deux points sur la carte ont strictement les mêmes coordonnées
+                # Modification des coordonnées à afficher si deux points sur la carte ont
+                # strictement les mêmes coordonnées
                 if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
                     nouv_lat = a_afficher["latitude"] + random.uniform(0.00001, 0.00005)
                     nouv_long = a_afficher["longitude"] + random.uniform(0.00001, 0.00005)
@@ -170,9 +183,9 @@ def resultats_ville():
                                       tooltip=a_afficher["nom"],
                                       popup=popup).add_to(myMap)
                 ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
-                print(ensemble_coord)
+                # print(ensemble_coord)
         # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
-        # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
+        # Numpy et panda sont utilisés pour trouver la "liste minimum/maximum" dans une liste de listes.
         ensemble_coord = numpy.array(ensemble_coord)
         data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
         sw = data_frame[['Lat', 'Long']].min().values.tolist()
@@ -209,6 +222,7 @@ def resultats():
         flash("Erreur : le pays demandé ('{query}') n'existe plus !".format(query=query), "error")
         return redirect("/")
     # Test pour les territoires qui sont dans le csv mais n'ont pas de représentation diplomatique
+    # (par ex. les territoires d'Outre-Mer)
     try:
         print(db[code])
     except:
@@ -228,7 +242,8 @@ def resultats():
                     value = ajout + value
                 html = html + '<tr><td>'+ str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
             if type(value) == dict:
-                # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
+                # Traitement des socials qui peuvent être des nested dict. Conversion
+                # en str et on va chercher les anchors
                 # en regex (les seules choses intéresantes pour l'utilisateur graphique)
                 string = json.dumps(value)
                 # regex non greedy
@@ -240,7 +255,8 @@ def resultats():
                     element = ajout + element
                     html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index+1) + element + '</td></tr>'
         html = html + "</table>"
-        # Modification des coordonnées dans le cas où il y a une ambassade et un consulat strictement au même endroit
+        # Modification d'un des deux dict de coordonnées dans le
+        # cas où il y a une ambassade et un consulat strictement au même endroit
         if [element_liste["latitude"], element_liste["longitude"]] in ensemble_coord:
             nouv_lat = element_liste["latitude"] + random.uniform(0.00001, 0.00005)
             nouv_long = element_liste["longitude"] + random.uniform(0.00001, 0.00005)
@@ -275,11 +291,12 @@ def resultats():
         users.session.commit()
     return render_template("resultats.html", myMap=myMap._repr_html_(), query=query)
 
+
 @app.route("/register", methods=["GET", "POST"])
 def inscription():
     """ Route gérant les inscriptions
     """
-    # Si on est en POST, cela veut dire que le formulaire a été envoyé
+    # Si on est en POST, cela veut dire que le formulaire a été envoyé depuis la page dékà chargée
     if request.method == "POST":
         statut, donnees = User.creer(
             login=request.form.get("login", None),
@@ -304,7 +321,7 @@ def connexion():
     if current_user.is_authenticated is True:
         flash("Vous êtes déjà connecté-e", "info")
         return redirect("/")
-    # Si on est en POST, cela veut dire que le formulaire a été envoyé
+    # Si on est en POST, cela veut dire que le formulaire a été envoyé depuis la page "connexion" déjà chargée
     if request.method == "POST":
         utilisateur = User.identification(
             login=request.form.get("login", None),
@@ -330,3 +347,40 @@ def deconnexion():
     flash("Vous êtes déconnecté-e", "info")
     return redirect("/")
 
+@app.route("/modification", methods=["POST", "GET"])
+@login_required
+def modification():
+    id = current_user.user_id
+    user = User.query.get_or_404(id)
+    # Si on est en POST, cela veut dire que le formulaire a été envoyé depuis la page déjà chargée
+    if request.method == "POST":
+        login = request.form.get("login", None)
+        email = request.form.get("email", None)
+        nom = request.form.get("nom", None)
+        nouv_motdepasse = request.form.get("nouv_motdepasse", None)
+        anc_motdepasse = request.form.get("anc_motdepasse", None)
+        effacer = 'effacer' in request.form
+        if len(login) == 0:
+            flash("Erreur : vous avez entré un login vide", "error")
+            return render_template("edition.html", user=user)
+        if len(email) == 0:
+            flash("Erreur : vous avez entré un email vide", "error")
+            return render_template("edition.html", user=user)
+        if len(nom) == 0:
+            flash("Erreur : vous avez entré un nom vide", "error")
+            return render_template("edition.html", user=user)
+        else:
+            user.user_login = login
+            user.user_email = email
+            user.user_nom = nom
+        # S'il y a modification du mot de passe
+        if len(nouv_motdepasse) > 0 and check_password_hash(user.user_password, anc_motdepasse):
+            user.user_password = generate_password_hash(nouv_motdepasse)
+        # Si on a choisi d'effacer l'historique (est-ce que la checkbox retourne une valeur)
+        if effacer is not None:
+            user.user_historique = None
+        users.session.add(user)
+        users.session.commit()
+        flash("Vos informations ont bien été modifiées", "success")
+        return render_template("profil.html")
+    return render_template("edition.html", user=user)
