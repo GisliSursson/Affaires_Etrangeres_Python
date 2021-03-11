@@ -224,7 +224,7 @@ def resultats():
     # Test pour les territoires qui sont dans le csv mais n'ont pas de représentation diplomatique
     # (par ex. les territoires d'Outre-Mer)
     try:
-        print(db[code])
+        len(db[code])
     except:
         flash("Erreur : le territoire demandé ('{query}') n'a pas de représentation diplomatique française !".format(query=query), "error")
         return redirect("/")
