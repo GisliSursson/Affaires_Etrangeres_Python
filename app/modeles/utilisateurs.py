@@ -40,11 +40,11 @@ class User(UserMixin, users.Model):
 
         """
         erreurs = []
-        if not login:
+        if not login or login == "":
             erreurs.append("Le login fourni est vide")
-        if not email:
+        if not email or email == "":
             erreurs.append("L'email fourni est vide")
-        if not nom:
+        if not nom or nom == "":
             erreurs.append("Le nom fourni est vide")
         if not motdepasse or len(motdepasse) < 6:
             erreurs.append("Le mot de passe fourni est vide ou trop court")

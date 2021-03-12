@@ -296,7 +296,7 @@ def resultats():
 def inscription():
     """ Route gérant les inscriptions
     """
-    # Si on est en POST, cela veut dire que le formulaire a été envoyé depuis la page dékà chargée
+
     if request.method == "POST":
         statut, donnees = User.creer(
             login=request.form.get("login", None),
