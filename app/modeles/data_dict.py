@@ -1,6 +1,5 @@
 import csv
 import os
-import json
 from ..app import chemin_actuel
 
 # Script servant à charger les données du CSV dans un dict Python

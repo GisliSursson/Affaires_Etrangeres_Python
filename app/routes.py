@@ -16,6 +16,9 @@ from .search import indexation, schema
 from whoosh.qparser import QueryParser
 from werkzeug.security import check_password_hash, generate_password_hash
 
+# "data" : liste des codes à deux lettres
+# "db" : la BD JSON principale
+
 # Variable globales utilisables par toutes les fonctions
 pays_existe_plus = ["su", "yu", "zr", "cs"]
 
@@ -48,7 +51,6 @@ def recherche():
     # Route permettant l'affichage de la page recherche selon le mode souhaité
     # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en cas de valeur nulle.
     type_recherche = request.args.get("type_voulu", None)
-    # chemin_json = send_from_directory(os.path.join(chemin_actuel, 'modeles'), 'codes_json.json')
     if type_recherche == 'pays':
         type = type_recherche
         # Placeholder choisi arbitrairement
@@ -62,6 +64,7 @@ def recherche():
 
 @app.route("/profil")
 @login_required
+# Route servant à l'utilisateur pour visualiser son profil
 def profil():
     histo_user = current_user.user_historique
     if histo_user is None:
@@ -72,12 +75,15 @@ def profil():
         pas_histo = False
     return render_template("profil.html", current_user=current_user, histo=histo, pas_histo=pas_histo)
 
+# On définie deux grands types de recherche : par ville et par pays. La recherche par pays fonctionne par jeu
+# de clefs/valeurs dans le JSON. La recherche par ville fonctionne grâce à l'indexation plein texte de Whoosh.
 
 # Définition de la fonction pour la recherche par ville
 @app.route("/resultats_ville")
 @login_required
 def resultats_ville():
     keyword = request.args.get("query", None)
+    # Carte qui sera complétée au fur et à mesure
     myMap = folium.Map()
     # Definition de là où on cherche dans l'indexation
     qp = QueryParser("city", schema=schema)
@@ -185,7 +191,7 @@ def resultats_ville():
                 ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
                 # print(ensemble_coord)
         # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
-        # Numpy et panda sont utilisés pour trouver la "liste minimum/maximum" dans une liste de listes.
+        # Numpy et pandas sont utilisés pour trouver la "liste minimum/maximum" dans une liste de listes.
         ensemble_coord = numpy.array(ensemble_coord)
         data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
         sw = data_frame[['Lat', 'Long']].min().values.tolist()
