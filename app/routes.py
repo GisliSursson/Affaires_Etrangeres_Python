@@ -48,6 +48,18 @@ def accueil():
 @app.route("/recherche")
 @login_required
 def recherche():
+    """Route détermiant le type de recherche choisie par l'utilisateur
+
+    :return: template
+    :rtype: flask.render_template
+
+    :return: type
+    :rtype: str
+
+    :return: placeholder
+    :rtype: str
+
+    """
     # Route permettant l'affichage de la page recherche selon le mode souhaité
     # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en cas de valeur nulle.
     type_recherche = request.args.get("type_voulu", None)
@@ -64,8 +76,21 @@ def recherche():
 
 @app.route("/profil")
 @login_required
-# Route servant à l'utilisateur pour visualiser son profil
 def profil():
+    """ Route servant à l'utilisateur pour visualiser son profil
+
+    :return: template
+    :rtype: flask.render_template
+
+    :return: current_user
+    :rtype: flask_login.current_user
+
+    :return: histo
+    :rtype: list
+
+    :return: pas_histo
+    :rtype: bool
+    """
     histo_user = current_user.user_historique
     if histo_user is None:
         histo = "Vous n'avez pas d'historique de recherche"
@@ -82,6 +107,17 @@ def profil():
 @app.route("/resultats_ville")
 @login_required
 def resultats_ville():
+    """Fonction pour la recherche par ville
+
+    :return: template
+    :rtype: flask.render_template
+
+    :return: myMap
+    :rtype: folium.Map._repr_html_()
+
+    :return: query
+    :rtype: str
+    """
     keyword = request.args.get("query", None)
     # Carte qui sera complétée au fur et à mesure
     myMap = folium.Map()
@@ -208,13 +244,24 @@ def resultats_ville():
             else:
                 utilisateur.user_historique += keyword + ";"
             users.session.commit()
-    return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword, ville=keyword)
+    return render_template("resultats.html", myMap=myMap._repr_html_(), query=keyword)
 
 
 # Définition de la fonction pour la recherche par pays
 @app.route("/resultats")
 @login_required
 def resultats():
+    """Fonction pour la recherche par pays
+
+        :return: template
+        :rtype: flask.render_template
+
+        :return: myMap
+        :rtype: folium.Map._repr_html_()
+
+        :return: query
+        :rtype: str
+        """
     query = request.args.get("query", None)
     try:
         code = (data[query]).lower()
@@ -300,7 +347,10 @@ def resultats():
 
 @app.route("/register", methods=["GET", "POST"])
 def inscription():
-    """ Route gérant les inscriptions
+    """Fonction pour les inscriptions
+
+    :return: template
+    :rtype: flask.render_template
     """
 
     if request.method == "POST":
@@ -322,7 +372,10 @@ def inscription():
 
 @app.route("/connexion", methods=["POST", "GET"])
 def connexion():
-    """ Route gérant les connexions
+    """Fonction pour les connexions
+
+    :return: template
+    :rtype: flask.render_template
     """
     if current_user.is_authenticated is True:
         flash("Vous êtes déjà connecté-e", "info")
@@ -348,6 +401,11 @@ login.login_view = 'connexion'
 
 @app.route("/deconnexion", methods=["POST", "GET"])
 def deconnexion():
+    """Fonction pour les déconnexions
+
+        :return: template
+        :rtype: flask.render_template
+        """
     if current_user.is_authenticated is True:
         logout_user()
     flash("Vous êtes déconnecté-e", "info")
@@ -356,6 +414,14 @@ def deconnexion():
 @app.route("/modification", methods=["POST", "GET"])
 @login_required
 def modification():
+    """Fonction pour les inscriptions
+
+        :return: template
+        :rtype: flask.render_template
+
+        :return: user
+        :rtype: flask_login.user
+        """
     id = current_user.user_id
     user = User.query.get_or_404(id)
     # Si on est en POST, cela veut dire que le formulaire a été envoyé depuis la page déjà chargée
