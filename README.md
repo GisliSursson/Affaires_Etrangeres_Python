@@ -26,7 +26,7 @@ On a aussi prévu une gestion des erreurs causées par la nature des données de
 
 Visualisation de l'entièreté de la base de données :
 
-![monde](./images/monde.png)
+![monde](./images/monde_full.png)
 
 Visualisation de l'index général des données:
 
