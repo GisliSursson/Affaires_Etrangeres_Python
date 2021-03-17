@@ -38,7 +38,7 @@ les ambassades, les consulats et les consulats généraux*
 
 Visualisation de l'index général des données:
 
-![index](./images/index.png)
+![index](./images/index_debut.png)
 
 Exemple de recherche pour un pays : 
 
