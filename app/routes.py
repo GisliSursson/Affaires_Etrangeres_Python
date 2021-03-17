@@ -64,14 +64,131 @@ def recherche():
     # Va chercher la valeur choisie par l'utilisateur dans l'HTML. Sera None en cas de valeur nulle.
     type_recherche = request.args.get("type_voulu", None)
     if type_recherche == 'pays':
-        type = type_recherche
+        type_voulu = type_recherche
         # Placeholder choisi arbitrairement
         placeholder = 'Brésil'
-        return render_template("recherche.html", type=type, placeholder=placeholder)
-    elif type_recherche == 'ville':
-        type = type_recherche
+        return render_template("recherche.html", type=type_voulu, placeholder=placeholder)
+    if type_recherche == 'ville':
+        type_voulu = type_recherche
         placeholder = 'Rome'
-        return render_template("recherche_ville.html", type=type, placeholder=placeholder)
+        return render_template("recherche_ville.html", type=type_voulu, placeholder=placeholder)
+    if type_recherche == 'carte':
+        # Carte qui sera complétée au fur et à mesure
+        myMap = folium.Map()
+        # Liste qui servira à la détermination du niveau de zoom optimal
+        ensemble_coord = []
+        # Definition de là où on cherche dans l'indexation
+        # qp = QueryParser("city", schema=schema)
+        searcher = indexation.searcher()
+        # Création d'un itérable contenant toutes les données indexées (les villes)
+        iterable = list(searcher.lexicon("city"))
+        for element in iterable:
+            # Definition de là où on cherche dans l'indexation
+            qp = QueryParser("city", schema=schema)
+            # Définition du mot-clef recherché à chaque itération
+            q = qp.parse(u'{keyword}'.format(keyword=element))
+            with indexation.searcher() as s:
+                # Exécution de la recherche
+                results = s.search(q, terms=True)
+                # S'il n'y a qu'une seule représentation diplomatique dans la ville
+                if len(results) == 1:
+                    result_ville = results.fields(0)
+                    a_afficher = result_ville.get("content")
+                    # Traitement de la chaîne renvoyée par whoosh pour la transformer en dict.
+                    a_afficher = ast.literal_eval(a_afficher)
+                    a_afficher = dict(a_afficher)
+                    # Construction graduelle du HTML qui sera affiché dans les bulles de la cartes
+                    html = "<table>"
+                    for key, value in a_afficher.items():
+                        if type(value) != dict:
+                            # Modification des URL pour ouverture dans un nouvel onglet
+                            if isinstance(value, str) and "<a" in value:
+                                value = value.replace("<a", "")
+                                ajout = "<a target='_blank''"
+                                value = ajout + value
+                            html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
+                        if type(value) == dict:
+                            # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
+                            # en regex (les seules choses intéresantes pour l'utilisateur graphique)
+                            string = json.dumps(value)
+                            # regex non greedy
+                            socials = re.findall('<a.+?</a>', string)
+                            for index, element in enumerate(list(set(socials))):
+                                # Modification de l'URL présent dans les données sources pour ouverture dans un nouvel onglet
+                                element = element.replace("<a", "")
+                                ajout = "<a target='_blank''"
+                                element = ajout + element
+                                html = html + '<tr><td>rés. soc. n°{index} :</td><td>'.format(
+                                    index=index + 1) + element + '</td></tr>'
+                    html = html + "</table>"
+                    popup = folium.Popup(html, min_width=800, max_width=800)
+                    folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
+                                  tooltip=a_afficher["nom"],
+                                  popup=popup).add_to(myMap)
+                    ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
+
+                # S'il y a plusieurs représentations diplomatiques dans la ville
+                elif len(results) > 1:
+                    # Liste qui servira à la déterminsation du niveau de zoom optimal
+                    # "Results" est un whoosh.searching.Results qui contient plusieurs "hits"
+                    for result_element in results:
+                        # Transformation du whoosh.searching.Hit en dict
+                        result_element_dico = result_element.fields()
+                        dico = result_element_dico.get("content")
+                        # Transformation de la value associée à la key "content" (qui est str) en dict
+                        dico = ast.literal_eval(str(dico))
+                        dico = dict(dico)
+                        # Renommage pour plus de clarté
+                        a_afficher = dico
+                        html = "<table>"
+                        for key, value in a_afficher.items():
+                            if type(value) != dict:
+                                # Modification des URL pour ouverture dans un nouvel onglet
+                                if isinstance(value, str) and "<a" in value:
+                                    value = value.replace("<a", "")
+                                    ajout = "<a target='_blank''"
+                                    value = ajout + value
+                                html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(
+                                    value).strip() + '</td></tr>'
+                            if type(value) == dict:
+                                # Traitement des socials qui peuvent être des nested dict.
+                                # Conversion en str et on va chercher les anchors
+                                # en regex (les seules choses intéresantes pour l'utilisateur graphique)
+                                string = json.dumps(value)
+                                # regex non greedy
+                                socials = re.findall('<a.+?</a>', string)
+                                for index, element in enumerate(list(set(socials))):
+                                    # Modification de l'URL présent dans les données sources
+                                    # pour ouverture dans un nouvel onglet
+                                    element = element.replace("<a", "")
+                                    ajout = "<a target='_blank''"
+                                    element = ajout + element
+                                    html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(
+                                        index + 1) + element + '</td></tr>'
+                        html = html + "</table>"
+                        # Modification des coordonnées à afficher si deux points sur la carte ont
+                        # strictement les mêmes coordonnées
+                        if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
+                            nouv_lat = a_afficher["latitude"] + random.uniform(0.00001, 0.00005)
+                            nouv_long = a_afficher["longitude"] + random.uniform(0.00001, 0.00005)
+                            popup = folium.Popup(html, min_width=800, max_width=800)
+                            folium.Marker(location=[nouv_lat, nouv_long], tooltip=a_afficher["nom"],
+                                          popup=popup).add_to(myMap)
+                        else:
+                            popup = folium.Popup(html, min_width=800, max_width=800)
+                            folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
+                                          tooltip=a_afficher["nom"],
+                                          popup=popup).add_to(myMap)
+                        ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
+        # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
+        # Numpy et pandas sont utilisés pour trouver la "liste minimum/maximum" dans une liste de listes.
+        ensemble_coord = numpy.array(ensemble_coord)
+        data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
+        sw = data_frame[['Lat', 'Long']].min().values.tolist()
+        ne = data_frame[['Lat', 'Long']].max().values.tolist()
+        myMap.fit_bounds([sw, ne])
+        return render_template("resultats.html", myMap=myMap._repr_html_(), query='visualisation de toutes les données')
+
 
 
 @app.route("/profil")
