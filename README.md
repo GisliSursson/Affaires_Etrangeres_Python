@@ -10,6 +10,8 @@ Cette application est destinée à la navigation dans les données du réseau di
 
 L'application permet de rechercher dans les données par pays et par ville. 
 
+Les données sources sont parfois irrégulières, le code prend en compte ce fait et s'y adapte.
+
 Par pays, la recherche s'effectue via une clef de dictionnaire. Les données affichées sont une représentation HTML générée dynamiquement à partir des données correspondant à la recherche.
 
 La recherche par ville s'effectue via un moteur de recherche plein texte *pure Python*. Une telle méthode de recherche sur les villes permet de ne pas se limiter aux capitales et permet également d'accéder aux villes où se trouvent des représentations consulaires. 

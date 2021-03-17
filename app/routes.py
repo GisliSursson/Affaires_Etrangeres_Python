@@ -33,11 +33,13 @@ def choix_couleur(dico):
         :rtype: str
 
         """
-    if "consulat" in str(dico).lower():
-        if "general" in str(dico).lower():
-            color = 'red'
-        else:
-            color = 'green'
+    # Rouge : consulat général, vert : consulat, bleu : ambassade
+    # NB : le code prend en compte l'inconsistence des données source dans les clefs de dict
+    dico = str(dico).lower()
+    if "_general" in dico:
+        color = 'red'
+    elif "consulat'" in str(dico).lower():
+        color = 'green'
     else:
         color = 'blue'
     return color
@@ -107,12 +109,13 @@ def recherche():
                     type_rep = representation["type"]
                     # Nettoyage de la donnée pour le type
                     if '_' in type_rep:
-                        type_rep = type.replace('_', ' ')
+                        type_rep = type_rep.replace('_', ' ')
+                    if "general" in type_rep:
+                        type_rep = type_rep.replace('general', 'général')
                     liste_ville.append({'ville':ville, 'type':type_rep})
                 liste.append({pays:liste_ville})
             except KeyError:
                 pass
-        print(liste)
         return render_template("index.html", liste=liste)
     if type_recherche == 'carte':
         # Carte qui sera complétée au fur et à mesure
@@ -138,6 +141,8 @@ def recherche():
                     a_afficher = ast.literal_eval(a_afficher)
                     a_afficher = dict(a_afficher)
                     # Construction graduelle du HTML qui sera affiché dans les bulles de la cartes
+                    # NB : le code prend en compte l'inconsistence des données sources
+                    # (certaines clefs manquent à certains dict
                     html = "<table>"
                     for key, value in a_afficher.items():
                         if type(value) != dict:
