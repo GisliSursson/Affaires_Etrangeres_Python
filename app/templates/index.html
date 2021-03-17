@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+{% block titre %}
+Index général
+{% endblock %}
+
+
+{% block body %}
+<h1>Index général des données</h1>
+
+<ul>
+    {% for pays in liste %}
+        {% for key, value in pays.items() %}
+        <li><a target='_blank' href="{{url_for('resultats', query=key)}}">{{key}}</a>:</li>
+            <ul>
+                {% for element in value %}
+                    <li><a target='_blank' href="{{url_for('resultats_ville', query=element)}}">{{element['ville']}}</a> ({{element['type']}})</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+</ul>
+  <footer class="bg-light text-center text-lg-start">
+    <div class="text-center p-3">
+        <a href="{{url_for('accueil')}}">Retour à l'accueil</a>
+      </div>
+    </footer>
+{% endblock %}
+

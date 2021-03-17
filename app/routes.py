@@ -72,6 +72,29 @@ def recherche():
         type_voulu = type_recherche
         placeholder = 'Rome'
         return render_template("recherche_ville.html", type=type_voulu, placeholder=placeholder)
+    # Affichage de l'index général de navigation
+    if type_recherche == 'index':
+        # L'index général sera affiché via une liste de dict du type [{'pays': [{ville:ville, type:type}]}, ...]
+        liste = []
+        liste_codes = data.values()
+        for code in liste_codes:
+            # Ici, ce n'est pas grave si le code n'existe pas dans la base JSON
+            try:
+                cible = db[code.lower()]
+                liste_ville = []
+                for representation in cible:
+                    ville = representation["ville"]
+                    pays = representation["pays"]
+                    type = representation["type"]
+                    # Nettoyage de la donnée pour le type
+                    if '_' in type:
+                        type = type.replace('_', ' ')
+                    liste_ville.append({'ville':ville, 'type':type})
+                liste.append({pays:liste_ville})
+            except KeyError:
+                pass
+        print(liste)
+        return render_template("index.html", liste=liste)
     if type_recherche == 'carte':
         # Carte qui sera complétée au fur et à mesure
         myMap = folium.Map()

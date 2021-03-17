@@ -28,6 +28,10 @@ Visualisation de l'entièreté de la base de données :
 
 ![monde](./images/monde.png)
 
+Visualisation de l'index général des données:
+
+![index](./images/index.png)
+
 Exemple de recherche pour un pays : 
 
 ![pays](./images/pays.png)
