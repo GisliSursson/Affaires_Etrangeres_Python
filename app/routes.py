@@ -77,8 +77,6 @@ def recherche():
         myMap = folium.Map()
         # Liste qui servira à la détermination du niveau de zoom optimal
         ensemble_coord = []
-        # Definition de là où on cherche dans l'indexation
-        # qp = QueryParser("city", schema=schema)
         searcher = indexation.searcher()
         # Création d'un itérable contenant toutes les données indexées (les villes)
         iterable = list(searcher.lexicon("city"))
@@ -121,10 +119,15 @@ def recherche():
                                 html = html + '<tr><td>rés. soc. n°{index} :</td><td>'.format(
                                     index=index + 1) + element + '</td></tr>'
                     html = html + "</table>"
+                    # Différenciation de couleurs entre ambassades et consulats (on évite le problème de majuscule)
+                    if "consulat" in str(a_afficher).lower():
+                        color = 'red'
+                    else:
+                        color = 'blue'
                     popup = folium.Popup(html, min_width=800, max_width=800)
                     folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                                   tooltip=a_afficher["nom"],
-                                  popup=popup).add_to(myMap)
+                                  popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
                     ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
 
                 # S'il y a plusieurs représentations diplomatiques dans la ville
@@ -166,6 +169,11 @@ def recherche():
                                     html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(
                                         index + 1) + element + '</td></tr>'
                         html = html + "</table>"
+                        # Différenciation de couleurs entre ambassades et consulats (on évite le problème de majuscule)
+                        if "consulat" in str(a_afficher).lower():
+                            color = 'red'
+                        else:
+                            color = 'blue'
                         # Modification des coordonnées à afficher si deux points sur la carte ont
                         # strictement les mêmes coordonnées
                         if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
@@ -173,12 +181,12 @@ def recherche():
                             nouv_long = a_afficher["longitude"] + random.uniform(0.00001, 0.00005)
                             popup = folium.Popup(html, min_width=800, max_width=800)
                             folium.Marker(location=[nouv_lat, nouv_long], tooltip=a_afficher["nom"],
-                                          popup=popup).add_to(myMap)
+                                          popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
                         else:
                             popup = folium.Popup(html, min_width=800, max_width=800)
                             folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                                           tooltip=a_afficher["nom"],
-                                          popup=popup).add_to(myMap)
+                                          popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
                         ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
         # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
         # Numpy et pandas sont utilisés pour trouver la "liste minimum/maximum" dans une liste de listes.
@@ -284,10 +292,15 @@ def resultats_ville():
                         element = ajout + element
                         html = html + '<tr><td>rés. soc. n°{index} :</td><td>'.format(index= index + 1) + element +'</td></tr>'
             html = html + "</table>"
+            # Détermination du code couleur
+            if "consulat" in str(a_afficher).lower():
+                color = 'red'
+            else:
+                color = 'blue'
             popup = folium.Popup(html, min_width=800, max_width=800)
             folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                           tooltip=a_afficher["nom"],
-                          popup=popup).add_to(myMap)
+                          popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
             ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
 
         # S'il y a plusieurs représentations diplomatiques dans la ville
@@ -328,6 +341,11 @@ def resultats_ville():
                             element = ajout + element
                             html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index + 1) + element + '</td></tr>'
                 html = html + "</table>"
+                # Détermination du code couleur
+                if "consulat" in str(a_afficher).lower():
+                    color = 'red'
+                else:
+                    color = 'blue'
                 # Modification des coordonnées à afficher si deux points sur la carte ont
                 # strictement les mêmes coordonnées
                 if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
@@ -335,12 +353,12 @@ def resultats_ville():
                     nouv_long = a_afficher["longitude"] + random.uniform(0.00001, 0.00005)
                     popup = folium.Popup(html, min_width=800, max_width=800)
                     folium.Marker(location=[nouv_lat, nouv_long], tooltip=a_afficher["nom"],
-                                      popup=popup).add_to(myMap)
+                                      popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
                 else:
                     popup = folium.Popup(html, min_width=800, max_width=800)
                     folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                                       tooltip=a_afficher["nom"],
-                                      popup=popup).add_to(myMap)
+                                      popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
                 ensemble_coord.append([a_afficher["latitude"], a_afficher["longitude"]])
                 # print(ensemble_coord)
         # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
@@ -425,6 +443,11 @@ def resultats():
                     element = ajout + element
                     html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index+1) + element + '</td></tr>'
         html = html + "</table>"
+        # Détermination du code couleur
+        if "consulat" in str(element_liste).lower():
+            color = 'red'
+        else:
+            color = 'blue'
         # Modification d'un des deux dict de coordonnées dans le
         # cas où il y a une ambassade et un consulat strictement au même endroit
         if [element_liste["latitude"], element_liste["longitude"]] in ensemble_coord:
@@ -432,11 +455,11 @@ def resultats():
             nouv_long = element_liste["longitude"] + random.uniform(0.00001, 0.00005)
             popup = folium.Popup(html, min_width=800, max_width=800)
             folium.Marker(location=[nouv_lat, nouv_long], tooltip=element_liste["nom"],
-                      popup=popup).add_to(myMap)
+                      popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
         else:
             popup = folium.Popup(html, min_width=800,max_width=800)
             folium.Marker(location=[element_liste["latitude"], element_liste["longitude"]], tooltip=element_liste["nom"],
-                          popup=popup).add_to(myMap)
+                          popup=popup, icon=folium.Icon(color=color)).add_to(myMap)
         ensemble_coord.append([element_liste["latitude"], element_liste["longitude"]])
     # Détermination du niveau de zoom optimal (Folium utilise des bornes sud-ouest et nord-est)
     # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
