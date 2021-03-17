@@ -24,6 +24,10 @@ On a aussi prévu une gestion des erreurs causées par la nature des données de
 
 ## Captures d'écran
 
+Visualisation de l'entièreté de la base de données :
+
+![monde](./images/monde.png)
+
 Exemple de recherche pour un pays : 
 
 ![pays](./images/pays.png)
