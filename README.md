@@ -59,13 +59,13 @@ Créez un environnement virtuel (dossier) dans lequel seront installées les lib
 
 ```bash
 
-virtualenv [chemin vers le dossier où vous voulez stocker l'environnement] -p python3
+virtualenv [chemin vers le dossier où vous voulez stocker votre environnement] -p python3
 ```
 
 Activez l'environnement virtuel 
 
 ```bash
-source [chemin vers le dossier d'environnement]/bin/activate
+source [chemin vers le dossier de votre environnement]/bin/activate
 ```
 
 Dans le dossier où vous avez cloné le projet, installez ensuite les librairies nécessaires 
