@@ -27,6 +27,8 @@ On a aussi prévu une gestion des erreurs causées par la nature des données de
 Visualisation de l'entièreté de la base de données :
 
 ![monde](./images/monde_full.png)
+*Le code couleur est utilisé pour différencier les 3 types de représentation diplomatique : 
+les ambassades, les consulats et les consulats généraux*
 
 Visualisation de l'index général des données:
 
