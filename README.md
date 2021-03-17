@@ -34,7 +34,7 @@ Visualisation de l'entièreté de la base de données :
 
 ![monde](./images/monde_full.png)
 *Le code couleur est utilisé pour différencier les 3 types de représentation diplomatique : 
-les ambassades, les consulats et les consulats généraux*
+les ambassades (bleu), les consulats (vert) et les consulats généraux (rouge)*
 
 Visualisation de l'index général des données:
 
