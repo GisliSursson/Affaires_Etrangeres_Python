@@ -101,9 +101,10 @@ def recherche():
                         if type(value) != dict:
                             # Modification des URL pour ouverture dans un nouvel onglet
                             if isinstance(value, str) and "<a" in value:
-                                value = value.replace("<a", "")
-                                ajout = "<a target='_blank''"
-                                value = ajout + value
+                                # La balise "span" est plus adaptée à un affichage en ligne
+                                value = value.replace("<p>", "<span>")
+                                value = value.replace("</p>", "</span>")
+                                value = value.replace("<a", "<a target='_blank'")
                             html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                         if type(value) == dict:
                             # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
@@ -148,9 +149,10 @@ def recherche():
                             if type(value) != dict:
                                 # Modification des URL pour ouverture dans un nouvel onglet
                                 if isinstance(value, str) and "<a" in value:
-                                    value = value.replace("<a", "")
-                                    ajout = "<a target='_blank''"
-                                    value = ajout + value
+                                    # La balise "span" est plus adaptée à un affichage en ligne
+                                    value = value.replace("<p>", "<span>")
+                                    value = value.replace("</p>", "</span>")
+                                    value = value.replace("<a", "<a target='_blank'")
                                 html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(
                                     value).strip() + '</td></tr>'
                             if type(value) == dict:
@@ -275,9 +277,10 @@ def resultats_ville():
                 if type(value) != dict:
                     # Modification des URL pour ouverture dans un nouvel onglet
                     if isinstance(value, str) and "<a" in value:
-                        value = value.replace("<a", "")
-                        ajout = "<a target='_blank''"
-                        value = ajout + value
+                        # La balise "span" est plus adaptée à un affichage en ligne
+                        value = value.replace("<p>", "<span>")
+                        value = value.replace("</p>", "</span>")
+                        value = value.replace("<a", "<a target='_blank'")
                     html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                 if type(value) == dict:
                     # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
@@ -322,9 +325,10 @@ def resultats_ville():
                     if type(value) != dict:
                         # Modification des URL pour ouverture dans un nouvel onglet
                         if isinstance(value, str) and "<a" in value:
-                            value = value.replace("<a", "")
-                            ajout = "<a target='_blank''"
-                            value = ajout + value
+                            # La balise "span" est plus adaptée à un affichage en ligne
+                            value = value.replace("<p>", "<span>")
+                            value = value.replace("</p>", "</span>")
+                            value = value.replace("<a", "<a target='_blank'")
                         html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                     if type(value) == dict:
                         # Traitement des socials qui peuvent être des nested dict.
@@ -425,9 +429,10 @@ def resultats():
             if type(value) != dict:
                 # Modification des URL pour ouverture dans un nouvel onglet
                 if isinstance(value, str) and "<a" in value:
-                    value = value.replace("<a", "")
-                    ajout = "<a target='_blank''"
-                    value = ajout + value
+                    # La balise "span" est plus adaptée à un affichage en ligne
+                    value = value.replace("<p>", "<span>")
+                    value = value.replace("</p>", "</span>")
+                    value = value.replace("<a", "<a target='_blank'")
                 html = html + '<tr><td>'+ str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
             if type(value) == dict:
                 # Traitement des socials qui peuvent être des nested dict. Conversion
