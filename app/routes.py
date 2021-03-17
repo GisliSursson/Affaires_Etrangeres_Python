@@ -22,6 +22,25 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # Variable globales utilisables par toutes les fonctions
 pays_existe_plus = ["su", "yu", "zr", "cs"]
 
+def choix_couleur(dico):
+    """Fonction déterminant la couleur du point sur la carte en fonction du type de représentation
+    diplomatique (ambassade, consulat, consulat général
+
+        :param [dico]: dict provenant de la base JSON
+        :type [dico]: dict
+
+        :return: couleur voulue (selon la doc Folium)
+        :rtype: str
+
+        """
+    if "consulat" in str(dico).lower():
+        if "general" in str(dico).lower():
+            color = 'red'
+        else:
+            color = 'green'
+    else:
+        color = 'blue'
+    return color
 
 @app.route("/a_propos")
 def a_propos():
@@ -85,11 +104,11 @@ def recherche():
                 for representation in cible:
                     ville = representation["ville"]
                     pays = representation["pays"]
-                    type = representation["type"]
+                    type_rep = representation["type"]
                     # Nettoyage de la donnée pour le type
-                    if '_' in type:
-                        type = type.replace('_', ' ')
-                    liste_ville.append({'ville':ville, 'type':type})
+                    if '_' in type_rep:
+                        type_rep = type.replace('_', ' ')
+                    liste_ville.append({'ville':ville, 'type':type_rep})
                 liste.append({pays:liste_ville})
             except KeyError:
                 pass
@@ -144,10 +163,7 @@ def recherche():
                                     index=index + 1) + element + '</td></tr>'
                     html = html + "</table>"
                     # Différenciation de couleurs entre ambassades et consulats (on évite le problème de majuscule)
-                    if "consulat" in str(a_afficher).lower():
-                        color = 'red'
-                    else:
-                        color = 'blue'
+                    color = choix_couleur(a_afficher)
                     popup = folium.Popup(html, min_width=800, max_width=800)
                     folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                                   tooltip=a_afficher["nom"],
@@ -195,10 +211,7 @@ def recherche():
                                         index + 1) + element + '</td></tr>'
                         html = html + "</table>"
                         # Différenciation de couleurs entre ambassades et consulats (on évite le problème de majuscule)
-                        if "consulat" in str(a_afficher).lower():
-                            color = 'red'
-                        else:
-                            color = 'blue'
+                        color = choix_couleur(a_afficher)
                         # Modification des coordonnées à afficher si deux points sur la carte ont
                         # strictement les mêmes coordonnées
                         if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
@@ -319,10 +332,7 @@ def resultats_ville():
                         html = html + '<tr><td>rés. soc. n°{index} :</td><td>'.format(index= index + 1) + element +'</td></tr>'
             html = html + "</table>"
             # Détermination du code couleur
-            if "consulat" in str(a_afficher).lower():
-                color = 'red'
-            else:
-                color = 'blue'
+            color = choix_couleur(a_afficher)
             popup = folium.Popup(html, min_width=800, max_width=800)
             folium.Marker(location=[a_afficher["latitude"], a_afficher["longitude"]],
                           tooltip=a_afficher["nom"],
@@ -369,10 +379,7 @@ def resultats_ville():
                             html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index + 1) + element + '</td></tr>'
                 html = html + "</table>"
                 # Détermination du code couleur
-                if "consulat" in str(a_afficher).lower():
-                    color = 'red'
-                else:
-                    color = 'blue'
+                color = choix_couleur(a_afficher)
                 # Modification des coordonnées à afficher si deux points sur la carte ont
                 # strictement les mêmes coordonnées
                 if [a_afficher["latitude"], a_afficher["longitude"]] in ensemble_coord:
@@ -472,10 +479,7 @@ def resultats():
                     html = html + '<tr><td>rés. soc. n°{}</td><td>'.format(index+1) + element + '</td></tr>'
         html = html + "</table>"
         # Détermination du code couleur
-        if "consulat" in str(element_liste).lower():
-            color = 'red'
-        else:
-            color = 'blue'
+        color = choix_couleur(element_liste)
         # Modification d'un des deux dict de coordonnées dans le
         # cas où il y a une ambassade et un consulat strictement au même endroit
         if [element_liste["latitude"], element_liste["longitude"]] in ensemble_coord:
