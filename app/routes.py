@@ -34,8 +34,14 @@ def choix_couleur(dico):
 
         """
     # Rouge : consulat général, vert : consulat, bleu : ambassade
-    # NB : le code prend en compte l'inconsistence des données source dans les clefs de dict
+    # NB : le code prend en compte l'inconsistence des données source dans les clefs de dict. Certains consulats généraux
+    # sont indiqués en type 'consulat'. Certains postes n'ont pas de type du tout.
+    # On est donc obligé de parser des str
     dico = str(dico).lower()
+    # NB : ne permet pas de colorier correctement les consulats généraux qui ont pour type
+    # 'consulat' au lieu de 'consulat_general'. Les problème est que les consulats généraux
+    # sont parfois indiqué dans les numéros d'urgence de postes d'autres types. On ne peut donc pas
+    # se baser sur l'occurence de la substring 'general' pour définir un consulat général.
     if "_general" in dico:
         color = 'red'
     elif "consulat'" in str(dico).lower():
@@ -105,6 +111,14 @@ def recherche():
                 liste_ville = []
                 for representation in cible:
                     ville = representation["ville"]
+                    # Traitement des str inconsistantes dans les données sources
+                    for lettre in ville:
+                        if lettre.isnumeric() or lettre == "-":
+                            ville = ville.replace(lettre, '')
+                    # Traitement pour les noms de ville où il y a des abréviations
+                    search_object = re.search(r"[A-Z]{2,}", ville)
+                    if search_object:
+                        ville = ville.replace(search_object.group(), '')
                     pays = representation["pays"]
                     type_rep = representation["type"]
                     # Nettoyage de la donnée pour le type
@@ -238,7 +252,7 @@ def recherche():
         sw = data_frame[['Lat', 'Long']].min().values.tolist()
         ne = data_frame[['Lat', 'Long']].max().values.tolist()
         myMap.fit_bounds([sw, ne])
-        return render_template("resultats.html", myMap=myMap._repr_html_(), query='visualisation de toutes les données')
+        return render_template("resultats.html", myMap=myMap._repr_html_(), query='visualisation de toutes les données', legende=True)
 
 
 
