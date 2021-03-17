@@ -13,7 +13,7 @@ Index général
         <li><a target='_blank' href="{{url_for('resultats', query=key)}}">{{key}}</a>:</li>
             <ul>
                 {% for element in value %}
-                    <li><a target='_blank' href="{{url_for('resultats_ville', query=element)}}">{{element['ville']}}</a> ({{element['type']}})</li>
+                    <li><a target='_blank' href="{{url_for('resultats_ville', query=element['ville'])}}">{{element['ville']}}</a> ({{element['type']}})</li>
                 {% endfor %}
             </ul>
         {% endfor %}

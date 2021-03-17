@@ -6,11 +6,15 @@ Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecol
 
 Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le Ministère de l'Europe et des Affaires Etrangères et en propose des représentations cartographiques. 
 
+### Nota
+
+Les données sources sont irrégulières : les mêmes informations ne sont pas fournies pour tous les postes diplomatiques.
+Nous avons choisi d'adapter l'application à ces inconsistances plutôt que de corriger les données sources. De ce fait, il est possible
+de changer les données source pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires Etrangères.
+
 ## Fonctionnalités
 
 L'application permet de rechercher dans les données par pays et par ville. 
-
-Les données sources sont parfois irrégulières, le code prend en compte ce fait et s'y adapte.
 
 Par pays, la recherche s'effectue via une clef de dictionnaire. Les données affichées sont une représentation HTML générée dynamiquement à partir des données correspondant à la recherche.
 
