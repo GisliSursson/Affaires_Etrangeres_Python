@@ -108,6 +108,7 @@ def recherche():
             # Ici, ce n'est pas grave si le code n'existe pas dans la base JSON
             try:
                 cible = db[code.lower()]
+                # Sera une liste de dict
                 liste_ville = []
                 for representation in cible:
                     ville = representation["ville"]
@@ -119,7 +120,10 @@ def recherche():
                     search_object = re.search(r"[A-Z]{2,}", ville)
                     if search_object:
                         ville = ville.replace(search_object.group(), '')
-                    pays = representation["pays"]
+                    # Détermination du "nom exact" du pays (utilisé pour hard coder les URL)
+                    for key, value in data.items():
+                        if value.lower() == representation['iso2']:
+                            pays = key
                     type_rep = representation["type"]
                     # Nettoyage de la donnée pour le type
                     if '_' in type_rep:
@@ -127,6 +131,7 @@ def recherche():
                     if "general" in type_rep:
                         type_rep = type_rep.replace('general', 'général')
                     liste_ville.append({'ville':ville, 'type':type_rep})
+                    # Classement des villes dans un pays par ordre alphabétique n'est pas possible pour les dict
                 liste.append({pays:liste_ville})
             except KeyError:
                 pass
