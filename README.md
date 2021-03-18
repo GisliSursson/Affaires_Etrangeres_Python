@@ -4,13 +4,13 @@ Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecol
 
 ## Présentation
 
-Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le Ministère de l'Europe et des Affaires Etrangères et en propose des représentations cartographiques. 
+Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le Ministère de l'Europe et des Affaires étrangères et en propose des représentations cartographiques. 
 
 ### Nota
 
 Les données sources sont irrégulières (informations qui ne sont pas fournies pour tous les postes, pays où le code ISO renseigné est faux, coordonnées géographiques correspondant au mauvais pays...).
 Nous avons choisi d'adapter l'application, tant que faire se peut, à ces inconsistances plutôt que de corriger les données sources. De ce fait, il est possible
-de changer les données source pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires Etrangères.
+de changer les données source pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires étrangères.
 
 ## Fonctionnalités
 
@@ -103,7 +103,7 @@ python3 run.py
 
 Il est possible que les données sur les représentations diplomatiques soient mises à jour par le Ministère
 des Affaires étrangères. Pour mettre à jour les données de l'application, il suffit de remplacer le fichier 
-app/modeles/**`data.json`** par les nouvelles données et de supprimer le dossier app/index. 
+**`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`app/index`** (s'il existe). 
 Le moteur de recherche recalculera alors l'indexation et créera un nouveau dossier contenant l'index. 
 
 ### Droits et licences
