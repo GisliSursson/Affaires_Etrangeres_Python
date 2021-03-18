@@ -6,3 +6,4 @@ flask-login
 folium
 numpy
 pandas
+werkzeug
