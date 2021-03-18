@@ -635,7 +635,10 @@ def modification():
         nom = request.form.get("nom", None)
         nouv_motdepasse = request.form.get("nouv_motdepasse", None)
         anc_motdepasse = request.form.get("anc_motdepasse", None)
-        effacer = 'effacer' in request.form
+        if 'effacer' in request.form:
+            effacer = True
+        else:
+            effacer = False
         if len(login) == 0:
             flash("Erreur : vous avez entré un login vide", "error")
             return render_template("edition.html", user=user)
@@ -653,10 +656,11 @@ def modification():
         if len(nouv_motdepasse) > 0 and check_password_hash(user.user_password, anc_motdepasse):
             user.user_password = generate_password_hash(nouv_motdepasse)
         # Si on a choisi d'effacer l'historique (est-ce que la checkbox retourne une valeur)
-        if effacer is not None:
+        print(effacer)
+        if effacer is True:
             user.user_historique = None
         users.session.add(user)
         users.session.commit()
         flash("Vos informations ont bien été modifiées", "success")
-        return render_template("profil.html")
+        return render_template("accueil.html")
     return render_template("edition.html", user=user)
