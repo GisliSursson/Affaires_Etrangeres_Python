@@ -1,5 +1,4 @@
 import os.path
-# import json
 
 from whoosh.fields import Schema, TEXT
 from whoosh.index import create_in, open_dir
@@ -10,27 +9,30 @@ from .modeles.data_db import data as db
 
 # Définition du schéma du moteur de recherche. Le code du pays sera indexé et le contenu
 # sera retourné en fonction du mot indexé (stored). "City" sert à l'indexation des noms de ville.
-# "Name" sert à l'information de l'utilisateur. "Content" servira à produire le marqueur. Whoosh ne peut pas indexer des chaînes de caractères en UTF-8.
+# "Name" sert à l'information de l'utilisateur. "Content" servira à produire le marqueur.
+# Whoosh ne peut pas indexer des chaînes de caractères en UTF-8.
 schema = Schema(city=TEXT, name=TEXT(stored=True), content=TEXT(stored=True))
 
-# Création (s'il n'existe pas déjà) du dossier où sera stockée l'indexation.
+# L'indexation n'est lancée que si le dossier "index" n'existe pas (la documentation Whoosh conseille de
+# stocker l'index dans un dossier comme cela).
 if not os.path.exists("index"):
     os.mkdir("index")
-index = create_in("index", schema)
+    index = create_in("index", schema)
+    # On ouvre l'index vide (qui a maintenant un schéma) pour y ajouter ce qu'on veut indexer.
+    index = open_dir("index")
+    writer = index.writer()
+    # Ajout des documents indexés selon les villes. Le contenu est le nom de la représentation diplomatique concernée.
+    for key, value in db.items():
+        for element in value:
+            writer.add_document(city=u"{nom_ville}".format(nom_ville=element.get("ville")),
+                                name=u"{nom_representation}".format(nom_representation=element.get("nom")),
+                                content=u"{contenu}".format(contenu=element.copy()))
 
-# On ouvre l'index vide (qui a maintenant un schéma) pour y ajouter ce qu'on veut indexer.
-index = open_dir("index")
-writer = index.writer()
-# Ajout des documents indexés selon les villes. Le contenu est le nom de la représentation diplomatique concernée.
-for key, value in db.items():
-    for element in value:
-        writer.add_document(city=u"{nom_ville}".format(nom_ville=element.get("ville")),
-                            name=u"{nom_representation}".format(nom_representation=element.get("nom")),
-                            content=u"{contenu}".format(contenu=element.copy()))
-
-# On enregistre les modifications.
-writer.commit()
-
+    # On enregistre les modifications.
+    writer.commit()
+    indexation = index
 # Variable finale pour import relatif
-indexation = index
+else:
+    # Si le dossier index existe, on reprend simplement l'indexation qu'il contient
+    indexation = open_dir("index")
 
