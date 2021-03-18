@@ -8,8 +8,8 @@ Cette application est destinée à la navigation dans les données du réseau di
 
 ### Nota
 
-Les données sources sont irrégulières : les mêmes informations ne sont pas fournies pour tous les postes diplomatiques.
-Nous avons choisi d'adapter l'application à ces inconsistances plutôt que de corriger les données sources. De ce fait, il est possible
+Les données sources sont irrégulières (informations qui ne sont pas fournies pour tous les postes, pays où le code ISO renseigné est faux...).
+Nous avons choisi d'adapter l'application, tant que faire se peut, à ces inconsistances plutôt que de corriger les données sources. De ce fait, il est possible
 de changer les données source pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires Etrangères.
 
 ## Fonctionnalités
@@ -112,6 +112,7 @@ La base de données au format JSON est issue de [data.gouv.fr](https://www.data.
 L'image de fond, issue du site [Pexel](https://www.pexels.com/fr-fr/), est libre de réutilisation.
 La liste des codes pays à deux lettres (ISO 3166-1 alpha-2) est issue de [cette](http://documentation.abes.fr/sudoc/formats/CodesPays.htm) source. 
 Le projet utilise le framework CSS/Javascript open source [Bootstrap](https://getbootstrap.com/).
-
+L'application utilise le moteur de recherche [Whoosh](https://whoosh.readthedocs.io/en/latest/index.html)
+développé par Matt Chaput. 
 
 

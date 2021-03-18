@@ -124,7 +124,15 @@ def recherche():
                     for key, value in data.items():
                         if value.lower() == representation['iso2']:
                             pays = key
-                    type_rep = representation["type"]
+                    # Filtrage sur les types pour les postes situés dans un pays mais compétents
+                    # pour un autre pays. Dans ce cas, la compétence est généralement indiquée dans le nom
+                    if "compéten" in representation['nom'].lower():
+                        type_rep = representation['nom']
+                        # Modification typographique esthétique
+                        type_rep = type_rep.replace('(','')
+                        type_rep = type_rep.replace(')', '')
+                    else:
+                        type_rep = representation["type"]
                     # Nettoyage de la donnée pour le type
                     if '_' in type_rep:
                         type_rep = type_rep.replace('_', ' ')
