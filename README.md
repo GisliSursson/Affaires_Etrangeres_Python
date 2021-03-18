@@ -103,7 +103,7 @@ python3 run.py
 
 Il est possible que les données sur les représentations diplomatiques soient mises à jour par le Ministère
 des Affaires étrangères. Pour mettre à jour les données de l'application, il suffit de remplacer le fichier 
-**`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`app/index`** (s'il existe). 
+**`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`index/`** (s'il existe). 
 Le moteur de recherche recalculera alors l'indexation et créera un nouveau dossier contenant l'index. 
 
 ### Droits et licences
