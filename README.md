@@ -106,6 +106,12 @@ des Affaires étrangères. Pour mettre à jour les données de l'application, il
 **`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`index/`** (s'il existe). 
 Le moteur de recherche recalculera alors l'indexation et créera un nouveau dossier contenant l'index. 
 
+#### Tests
+
+Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
+fork, puis faire une *pull request* au *repository* principal. Le framework [Travis CI](https://travis-ci.com/) se
+chargera de vérifier la validité des nouvelles données. 
+
 ### Droits et licences
 
 La base de données au format JSON est issue de [data.gouv.fr](https://www.data.gouv.fr/).
