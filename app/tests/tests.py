@@ -12,6 +12,7 @@ def test_valide(doc):
             :param doc: doc à tester
             :type doc: JSON file
     """
+    print("Test de validité du JSON")
     with open(doc) as doc:
         try:
             doc = json.load(doc)
@@ -30,6 +31,7 @@ def test_schema(doc):
             :param doc: doc à tester
             :type doc: JSON file
     """
+    print("Test de conformité du JSOn par rapport au schéma de données")
     with open(doc) as doc:
         doc = json.load(doc)
         for key, value in doc.item():
