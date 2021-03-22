@@ -40,7 +40,7 @@ def test_schema(doc):
     with open(doc) as doc:
         doc = json.load(doc)
         doc = dict(doc)
-        for key, value in doc.item():
+        for key, value in doc.items():
             if not isinstance(key, str) or not len(key) == 2:
                 if key != "ilps":
                     print("Erreur ! Il y a un problème sur la clef : " + str(key))
