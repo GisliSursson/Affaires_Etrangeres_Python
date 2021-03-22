@@ -10,13 +10,14 @@ Index général
 <ul>
     {% for pays in liste %}
         {% for key, value in pays.items() %}
-        <li><a target='_blank' href="{{url_for('resultats', query=key)}}">{{key}}</a>:</li>
+        <li><a target='_blank' href="{{url_for('resultats', query=key)}}">{{key}}</a>:
             <ul>
                 {% for element in value %}
                     <li><a target='_blank' href="{{url_for('resultats_ville', query=element['ville'])}}">{{element['ville']}}</a> ({{element['type']}})</li>
                 {% endfor %}
             </ul>
         {% endfor %}
+        </li>
     {% endfor %}
 </ul>
   <footer class="bg-light text-center text-lg-start">

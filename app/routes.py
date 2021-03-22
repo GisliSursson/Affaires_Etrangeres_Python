@@ -15,6 +15,7 @@ from .modeles.data_db import data as db
 from .search import indexation, schema
 from whoosh.qparser import QueryParser
 from werkzeug.security import check_password_hash, generate_password_hash
+from .tests.tests import test_schema, test_valide
 
 # "data" : liste des codes à deux lettres
 # "db" : la BD JSON principale
