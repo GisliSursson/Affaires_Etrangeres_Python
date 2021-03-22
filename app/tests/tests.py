@@ -41,19 +41,25 @@ def test_schema(doc):
     with open(doc) as doc:
         doc = json.load(doc)
         doc = dict(doc)
+        erreur = False
         for key, value in doc.items():
             if not isinstance(key, str) or not len(key) == 2:
                 if key != "ilps":
                     print("Erreur ! Il y a un problème sur la clef : " + str(key))
-            elif isinstance(value, list):
+                    erreur = True
+            if isinstance(value, list):
                 for element in value:
                     if not isinstance(element, dict):
                         print("Erreur! Il y a un problème sur la chaîne clef/list/dict : " + str(key) + " / "
                               + str(value) + " / " + str(element))
-            elif not isinstance(value, list):
+                        erreur = True
+            if not isinstance(value, list):
                 print("Erreur! Il y a un problème sur le couple clef/valeur : " + str(key) + " / " + str(value))
-            else:
-                print("Votre JSON est conforme au schéma.")
+                erreur = True
+        if erreur is False:
+            print("Votre JSON est conforme au schéma.")
+        else:
+            print("Votre JSON n'est pas conforme au schéma.")
 
 # Tests sur la validité des données (les tests ne doivent remonter aucune erreur s'il n'y a pas eu de
 # mise à jour des données de la part de l'utilisateur).
