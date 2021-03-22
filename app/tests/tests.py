@@ -36,8 +36,9 @@ def test_schema(doc):
             :param doc: doc à tester
             :type doc: JSON file
     """
-    print("Test de conformité du JSOn par rapport au schéma de données")
+    print("Test de conformité du JSON par rapport au schéma de données")
     with open(doc, 'r') as doc:
+        doc = str(doc)
         doc = json.loads(doc)
         for key, value in doc.item():
             if not isinstance(key, str) or not len(key) == 2:
