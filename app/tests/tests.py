@@ -33,6 +33,7 @@ def test_schema(doc):
     pays. De plus, cela pourrait aller à l'encontre du principe pythonien de EAFP (Easier to ask for forgiveness than permission)
     qui consiste à faire des itérations sans vérifications des données a priori et d'éventullement prévoir des erreurs.
 
+    Le JSON des données doit avoir l'architecture suivante : "ab" : [{dict}, {dict}...], "cd": ...
             :param doc: doc à tester
             :type doc: JSON file
     """
@@ -44,7 +45,12 @@ def test_schema(doc):
             if not isinstance(key, str) or not len(key) == 2:
                 if key != "ilps":
                     print("Erreur ! Il y a un problème sur la clef : " + str(key))
-            elif not isinstance(value, dict):
+            if isinstance(value, list):
+                for element in value:
+                    if not isinstance(element, dict):
+                        print("Erreur! Il y a un problème sur la chaîne clef/list/dict : " + str(key) + " / "
+                              + str(value) + " / " + str(element))
+            else:
                 print("Erreur! Il y a un problème sur le couple clef/valeur : " + str(key) + " / " + str(value))
 
 # Tests sur la validité des données (les tests ne doivent remonter aucune erreur s'il n'y a pas eu de
