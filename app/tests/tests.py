@@ -37,9 +37,9 @@ def test_schema(doc):
             :type doc: JSON file
     """
     print("Test de conformité du JSON par rapport au schéma de données")
-    with open(doc, 'r') as doc:
-        doc = str(doc)
-        doc = json.loads(doc)
+    with open(doc) as doc:
+        doc = json.load(doc)
+        doc = dict(doc)
         for key, value in doc.item():
             if not isinstance(key, str) or not len(key) == 2:
                 if key != "ilps":
