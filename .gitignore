@@ -3,3 +3,4 @@
 *.sqlite
 /index
 .idea/
+__init__.py
