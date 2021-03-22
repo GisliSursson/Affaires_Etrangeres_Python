@@ -2,5 +2,4 @@
 !requirements.txt
 *.sqlite
 /index
-.idea/
 __init__.py
