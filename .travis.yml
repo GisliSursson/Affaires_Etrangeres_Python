@@ -1,5 +1,7 @@
 # langage du test
 language: python
+# Pour éviter que Travis n'installe des choses inutiles aux tests
+sudo:false
 # version
 python:
   - 3.8
