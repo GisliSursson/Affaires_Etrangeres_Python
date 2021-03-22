@@ -5,6 +5,7 @@
 import json
 # Librairie permettant d'interagir avec n'importe quel OS
 import os
+from os.path import dirname, abspath
 
 
 def test_valide(doc):
@@ -50,7 +51,13 @@ def test_schema(doc):
 # ne donnent que des messages dans le terminal au lancement de l'application.
 
 
-for root, dirs, files in os.walk("../modeles", topdown=True):
+# Dossier parent de l'actuel
+dossier_parent = dirname(dirname(abspath(__file__)))
+# Chemin vers le dossier "modeles" où se trouvent les données
+chemin_modeles = os.path.abspath(os.path.join(dossier_parent, "modeles"))
+
+
+for root, dirs, files in os.walk(chemin_modeles, topdown=True):
     for name in files:
         filename = os.path.join(root, name)
         if not filename.endswith(".json"):
