@@ -1,7 +1,8 @@
 # langage du test
 language: python
-# Pour éviter que Travis n'installe des choses inutiles aux tests
-sudo: false
+# Travis installe par défaut les requirements. Cette syntaxe permet de l'éviter car c'est inutile
+# dans notre cas
+install: pip --version
 # version
 python:
   - 3.8
