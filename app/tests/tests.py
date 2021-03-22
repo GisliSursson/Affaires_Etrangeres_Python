@@ -37,8 +37,8 @@ def test_schema(doc):
             :type doc: JSON file
     """
     print("Test de conformité du JSOn par rapport au schéma de données")
-    with open(doc) as doc:
-        doc = json.load(doc)
+    with open(doc, 'r') as doc:
+        doc = json.loads(doc)
         for key, value in doc.item():
             if not isinstance(key, str) or not len(key) == 2:
                 if key != "ilps":
@@ -56,10 +56,8 @@ def test_schema(doc):
 
 # Dossier parent de l'actuel
 dossier_parent = dirname(dirname(abspath(__file__)))
-print(dossier_parent)
 # Chemin vers le dossier "modeles" où se trouvent les données
 chemin_modeles = os.path.abspath(os.path.join(dossier_parent, "modeles"))
-print(chemin_modeles)
 
 for root, dirs, files in os.walk(chemin_modeles, topdown=True):
     for name in files:
