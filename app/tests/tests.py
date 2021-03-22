@@ -5,7 +5,7 @@
 import json
 # Librairie permettant d'interagir avec n'importe quel OS
 import os
-from os.path import dirname, abspath
+
 
 def test_valide(doc):
     """ fonction testant si le JSON est valide
@@ -20,6 +20,7 @@ def test_valide(doc):
         # Type d'erreur levée en cas de JSON malformé.
         except json.decoder.JSONDecodeError:
             print("Attention ! Votre document n'est pas du JSON valide.")
+
 
 def test_schema(doc):
     """ Test si le document est conforme au schéma de données de data.gouv. Les clefs principales sont les codes
@@ -47,6 +48,7 @@ def test_schema(doc):
 # On parse tous les fichiers du dossier modeles en ne s'arrêtant que sur les JSON. Le seul JSON
 # est normalement la "base de données" principale. Les tests ne sont pas censés faire s'arrêter l'application. Ils
 # ne donnent que des messages dans le terminal au lancement de l'application.
+
 
 for root, dirs, files in os.walk("../modeles", topdown=True):
     for name in files:
