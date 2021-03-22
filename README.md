@@ -4,7 +4,15 @@ Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecol
 
 ## Présentation
 
-Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le Ministère de l'Europe et des Affaires étrangères et en propose des représentations cartographiques. 
+Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le 
+Ministère de l'Europe et des Affaires étrangères et en propose des représentations cartographiques. 
+
+Les consignes étaient les suivantes :
+
+- Utilisation du JSON comme "base de données".
+- Utilisation d'un moteur de recherche *pure python* pour la navigation et la recherche dans les données (eg. whoosh).
+- Visualisation avec du JavaScript, type leaflet.
+- Fonctionnalité d'affichage d'un élément et un index général contenant les données.
 
 ### Nota
 
