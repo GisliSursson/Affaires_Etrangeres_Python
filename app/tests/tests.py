@@ -8,6 +8,9 @@ import os
 from os.path import dirname, abspath
 
 
+print("Lancement des tests")
+
+
 def test_valide(doc):
     """ fonction testant si le JSON est valide
             :param doc: doc à tester
@@ -53,9 +56,10 @@ def test_schema(doc):
 
 # Dossier parent de l'actuel
 dossier_parent = dirname(dirname(abspath(__file__)))
+print(dossier_parent)
 # Chemin vers le dossier "modeles" où se trouvent les données
 chemin_modeles = os.path.abspath(os.path.join(dossier_parent, "modeles"))
-
+print(chemin_modeles)
 
 for root, dirs, files in os.walk(chemin_modeles, topdown=True):
     for name in files:
