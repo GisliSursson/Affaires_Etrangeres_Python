@@ -109,7 +109,7 @@ Le moteur de recherche recalculera alors l'indexation et créera un nouveau doss
 #### Tests
 
 Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
-fork, puis faire une *pull request* au *repository* principal. Le framework [Travis CI](https://travis-ci.com/) se
+fork, puis faire une *pull request* au *repository* principal. Ensuite, le framework [Travis CI](https://travis-ci.com/) se
 chargera de vérifier la validité des nouvelles données. 
 
 ### Droits et licences
