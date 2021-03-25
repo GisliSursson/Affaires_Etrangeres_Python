@@ -11,7 +11,7 @@ Les consignes étaient les suivantes :
 
 - Utilisation du JSON comme "base de données".
 - Utilisation d'un moteur de recherche *pure python* pour la navigation et la recherche dans les données (eg. whoosh).
-- Visualisation avec du JavaScript, type leaflet.
+- Visualisation avec du JavaScript, type *leaflet*.
 - Fonctionnalité d'affichage d'un élément et un index général contenant les données.
 
 ### Nota
@@ -26,7 +26,7 @@ L'application permet de rechercher dans les données par pays et par ville.
 
 Par pays, la recherche s'effectue via une clef de dictionnaire. Les données affichées sont une représentation HTML générée dynamiquement à partir des données correspondant à la recherche.
 
-La recherche par ville s'effectue via un moteur de recherche plein texte *pure Python*. Une telle méthode de recherche sur les villes permet de ne pas se limiter aux capitales et permet également d'accéder aux villes où se trouvent des représentations consulaires. 
+La recherche par ville s'effectue via un moteur de recherche plein texte *pure Python*. Une telle méthode de recherche sur les villes permet de ne pas se limiter aux capitales et d'accéder aux villes où se trouvent des représentations consulaires. 
 
 Les résultats de recherche sont présentés sous forme de points sur une carte. Chaque point contient les données correspondant au poste diplomatique en question (nom, adresse, réseaux sociaux...)
 
@@ -114,11 +114,13 @@ des Affaires étrangères. Pour mettre à jour les données de l'application, il
 **`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`index/`** (s'il existe). 
 Le moteur de recherche recalculera alors l'indexation et créera un nouveau dossier contenant l'index. 
 
-#### Tests
+#### Tests d'intégration continue
 
 Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
 fork, puis faire une *pull request* au *repository* principal. Ensuite, le framework [Travis CI](https://travis-ci.com/) se
-chargera de vérifier la validité des nouvelles données. 
+chargera de vérifier la validité des nouvelles données. Travis CI est un framework d'intégration continue. Ce type de test est utilisé car la mise à jour des données 
+sources peut potentiellement affecter tous les utilisateurs de l'applications.
+
 
 ### Droits et licences
 
