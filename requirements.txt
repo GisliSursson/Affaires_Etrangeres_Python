@@ -8,3 +8,5 @@ folium
 numpy
 pandas
 werkzeug
+beautifulsoup4
+django

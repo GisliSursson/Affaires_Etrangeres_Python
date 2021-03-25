@@ -1,4 +1,4 @@
-# Ces tests ont pour but de vérifier que les données en entrée sont conformes au schéma des données originales
+# Ces tests_ic ont pour but de vérifier que les données en entrée sont conformes au schéma des données originales
 # fourni par le MEAE en cas de mise à jour.
 
 # Librairie permettant de manipuler des fichiers
@@ -8,7 +8,7 @@ import os
 from os.path import dirname, abspath
 
 
-print("Lancement des tests")
+print("Lancement des tests_ic")
 
 
 def test_valide(doc):
@@ -61,11 +61,11 @@ def test_schema(doc):
         else:
             print("Votre JSON n'est pas conforme au schéma.")
 
-# Tests sur la validité des données (les tests ne doivent remonter aucune erreur s'il n'y a pas eu de
+# Tests sur la validité des données (les tests_ic ne doivent remonter aucune erreur s'il n'y a pas eu de
 # mise à jour des données de la part de l'utilisateur).
 
 # On parse tous les fichiers du dossier modeles en ne s'arrêtant que sur les JSON. Le seul JSON
-# est normalement la "base de données" principale. Les tests ne sont pas censés faire s'arrêter l'application. Ils
+# est normalement la "base de données" principale. Les tests_ic ne sont pas censés faire s'arrêter l'application. Ils
 # ne donnent que des messages dans le terminal au lancement de l'application.
 
 

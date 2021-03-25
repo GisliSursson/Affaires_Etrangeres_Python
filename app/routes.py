@@ -564,7 +564,6 @@ def resultats():
         users.session.commit()
     return render_template("resultats.html", myMap=myMap._repr_html_(), query=query)
 
-
 @app.route("/register", methods=["GET", "POST"])
 def inscription():
     """Fonction pour les inscriptions
@@ -680,3 +679,11 @@ def modification():
         flash("Vos informations ont bien été modifiées", "success")
         return render_template("accueil.html")
     return render_template("edition.html", user=user)
+
+
+#@app.after_request
+#def after(response):
+    #print(response.status)
+    #print(response.headers)
+    #print(response.get_data().decode('utf-8'))
+    #return response

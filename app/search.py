@@ -16,7 +16,7 @@ schema = Schema(city=TEXT, name=TEXT(stored=True), content=TEXT(stored=True))
 # L'indexation n'est lancée que si le dossier "index" n'existe pas (la documentation Whoosh conseille de
 # stocker l'index dans un dossier comme cela).
 if not os.path.exists("index"):
-    print("Création du dossier 'index'.")
+    # print("Création du dossier 'index'.")
     os.mkdir("index")
     index = create_in("index", schema)
     # On ouvre l'index vide (qui a maintenant un schéma) pour y ajouter ce qu'on veut indexer.

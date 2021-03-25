@@ -5,7 +5,7 @@ python:
   - 3.8
 # on lance le script de test
 script:
-  - python3 app/tests/tests.py
+  - python3 tests_ic/tests_ic.py
 # notifications par email
 notifications:
   email:
