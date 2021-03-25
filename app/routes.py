@@ -174,6 +174,9 @@ def recherche():
                     html = "<table>"
                     for key, value in a_afficher.items():
                         if type(value) != dict:
+                            # Modification du type consulat général pour qu'il soit plus joli à afficher
+                            if isinstance(value, str) and "consulat_general" in value:
+                                value = value.replace("consulat_general", "consulat général")
                             # Modification des URL pour ouverture dans un nouvel onglet
                             if isinstance(value, str) and "<a" in value:
                                 # La balise "span" est plus adaptée à un affichage en ligne
@@ -219,6 +222,9 @@ def recherche():
                         html = "<table>"
                         for key, value in a_afficher.items():
                             if type(value) != dict:
+                                # Modification du type consulat général pour qu'il soit plus joli à afficher
+                                if isinstance(value, str) and "consulat_general" in value:
+                                    value = value.replace("consulat_general", "consulat général")
                                 # Modification des URL pour ouverture dans un nouvel onglet
                                 if isinstance(value, str) and "<a" in value:
                                     # La balise "span" est plus adaptée à un affichage en ligne
@@ -344,6 +350,9 @@ def resultats_ville():
             html = "<table>"
             for key, value in a_afficher.items():
                 if type(value) != dict:
+                    # Modification du type consulat général pour qu'il soit plus joli à afficher
+                    if isinstance(value, str) and "consulat_general" in value:
+                        value = value.replace("consulat_general", "consulat général")
                     # Modification des URL pour ouverture dans un nouvel onglet
                     if isinstance(value, str) and "<a" in value:
                         # La balise "span" est plus adaptée à un affichage en ligne
@@ -389,6 +398,9 @@ def resultats_ville():
                 html = "<table>"
                 for key, value in a_afficher.items():
                     if type(value) != dict:
+                        # Modification du type consulat général pour qu'il soit plus joli à afficher
+                        if isinstance(value, str) and "consulat_general" in value:
+                            value = value.replace("consulat_general", "consulat général")
                         # Modification des URL pour ouverture dans un nouvel onglet
                         if isinstance(value, str) and "<a" in value:
                             # La balise "span" est plus adaptée à un affichage en ligne
@@ -490,6 +502,9 @@ def resultats():
         html = "<table>"
         for key, value in element_liste.items():
             if type(value) != dict:
+                # Modification du type consulat général pour qu'il soit plus joli à afficher
+                if isinstance(value, str) and "consulat_general" in value:
+                    value = value.replace("consulat_general", "consulat général")
                 # Modification des URL pour ouverture dans un nouvel onglet
                 if isinstance(value, str) and "<a" in value:
                     # La balise "span" est plus adaptée à un affichage en ligne

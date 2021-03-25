@@ -16,7 +16,7 @@ Les consignes étaient les suivantes :
 
 ### Nota
 
-Les données sources sont irrégulières (informations qui ne sont pas fournies pour tous les postes, pays où le code ISO renseigné est faux, coordonnées géographiques correspondant au mauvais pays...).
+Les données sources sont irrégulières (informations qui ne sont pas fournies pour tous les postes, pays où le code ISO renseigné est faux, coordonnées géographiques correspondant au mauvais pays, fautes d'orthographe...).
 Nous avons choisi d'adapter l'application, tant que faire se peut, à ces inconsistances plutôt que de corriger les données sources. De ce fait, il est possible
 de changer les données source pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires étrangères.
 
