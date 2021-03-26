@@ -6,6 +6,7 @@ python:
 # on lance le script de test
 script:
   - python3 tests_ic/tests.py
+  - pytest -v -s
 # notifications par email
 notifications:
   email:

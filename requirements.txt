@@ -9,3 +9,4 @@ numpy
 pandas
 werkzeug
 beautifulsoup4
+pytest

@@ -35,7 +35,8 @@ def choix_couleur(dico):
 
         """
     # Rouge : consulat général, vert : consulat, bleu : ambassade
-    # NB : le code prend en compte l'inconsistence des données source dans les clefs de dict. Certains consulats généraux
+    # NB : le code prend en compte l'inconsistence des données source dans les clefs de dict.
+    # Certains consulats généraux
     # sont indiqués en type 'consulat'. Certains postes n'ont pas de type du tout.
     # On est donc obligé de parser des str
     dico = str(dico).lower()
@@ -112,36 +113,43 @@ def recherche():
                 # Sera une liste de dict
                 liste_ville = []
                 for representation in cible:
-                    ville = representation["ville"]
-                    # Traitement des str inconsistantes dans les données sources
-                    for lettre in ville:
-                        if lettre.isnumeric() or lettre == "-":
-                            ville = ville.replace(lettre, '')
-                    # Traitement pour les noms de ville où il y a des abréviations
-                    search_object = re.search(r"[A-Z]{2,}", ville)
-                    if search_object:
-                        ville = ville.replace(search_object.group(), '')
-                    # Détermination du "nom exact" du pays (utilisé pour hard coder les URL)
-                    for key, value in data.items():
-                        if value.lower() == representation['iso2']:
-                            pays = key
-                    # Filtrage sur les types pour les postes situés dans un pays mais compétents
-                    # pour un autre pays. Dans ce cas, la compétence est généralement indiquée dans le nom
-                    if "compéten" in representation['nom'].lower():
-                        type_rep = representation['nom']
-                        # Modification typographique esthétique
-                        type_rep = type_rep.replace('(','')
-                        type_rep = type_rep.replace(')', '')
-                    else:
-                        type_rep = representation["type"]
-                    # Nettoyage de la donnée pour le type
-                    if '_' in type_rep:
-                        type_rep = type_rep.replace('_', ' ')
-                    if "general" in type_rep:
-                        type_rep = type_rep.replace('general', 'général')
-                    liste_ville.append({'ville':ville, 'type':type_rep})
-                    # Classement des villes dans un pays par ordre alphabétique n'est pas possible pour les dict
-                liste.append({pays:liste_ville})
+                    # Certains postes n'ont pas de ville indiqué
+                    try:
+                        ville = representation["ville"]
+                        # Traitement des str inconsistantes dans les données sources
+                        for lettre in ville:
+                            if lettre.isnumeric():
+                                ville = ville.replace(lettre, '')
+                        # Traitement pour les noms de ville où il y a des abréviations
+                        search_object = re.search(r"([A-Z]\.){2}", ville)
+                        if search_object:
+                            ville = ville.replace(search_object.group(), '')
+                        # Correction unique pour Brasilia (si utilisation regex impacte autres villes)
+                        if ' - Df' in ville:
+                            ville = ville.replace(' - Df', '')
+                        # Détermination du "nom exact" du pays (utilisé pour hard coder les URL)
+                        for key, value in data.items():
+                            if value.lower() == representation['iso2']:
+                                pays = key
+                        # Filtrage sur les types pour les postes situés dans un pays mais compétents
+                        # pour un autre pays. Dans ce cas, la compétence est généralement indiquée dans le nom
+                        if "compéten" in representation['nom'].lower():
+                            type_rep = representation['nom']
+                            # Modification typographique esthétique
+                            type_rep = type_rep.replace('(', '')
+                            type_rep = type_rep.replace(')', '')
+                        else:
+                            type_rep = representation["type"]
+                        # Nettoyage de la donnée pour le type
+                        if '_' in type_rep:
+                            type_rep = type_rep.replace('_', ' ')
+                        if "general" in type_rep:
+                            type_rep = type_rep.replace('general', 'général')
+                        liste_ville.append({'ville': ville.title(), 'type': type_rep})
+                        # Classement des villes dans un pays par ordre alphabétique n'est pas possible pour les dict
+                    except KeyError:
+                        pass
+                liste.append({pays: liste_ville})
             except KeyError:
                 pass
         return render_template("index.html", liste=liste)
@@ -154,6 +162,7 @@ def recherche():
         # Création d'un itérable contenant toutes les données indexées (les villes)
         iterable = list(searcher.lexicon("city"))
         for element in iterable:
+            element = element.decode("utf-8")
             # Definition de là où on cherche dans l'indexation
             qp = QueryParser("city", schema=schema)
             # Définition du mot-clef recherché à chaque itération

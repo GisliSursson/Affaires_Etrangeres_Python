@@ -8,7 +8,7 @@ with open(os.path.join(chemin_actuel, "modeles", "codes_pays.csv"), "r") as csvf
     codes_dict = {}
     for row in reader:
         # Traitement spécifique pour Israel dont le code ISO est 'IL' mais qui est codé comme 'ILPS' dans les données
-        # du ministère.
+        # du ministère. Un traitement manuel a également été fait pour rajouter le Kosovo.
         if row[1] == "IL":
             codes_dict[row[0].strip()] = "ILPS"
         # Traitement spécifique pour Saint-Marin dont le code ISO est 'SM' mais qui a le code 'SH' dans les
