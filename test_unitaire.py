@@ -58,7 +58,6 @@ def test_inscri(client):
     # On évite les caractères spéciaux
     assert b'Enregistrement effectu' in rv.data
 
-
 def test_pays(client):
     """Fonction de test pour le bon affichage d'un pays"""
     rv = connexion(client)
@@ -66,14 +65,10 @@ def test_pays(client):
     pays = choice(liste_pays)
     pays_url = urllib.parse.quote(pays)
     response = client.get("/resultats?query=" + pays_url, follow_redirects=True)
-    # print(response)
     # La réponse HTTP doit forcément avoir un coprs (puisqu'on retourne des données).
     # .data est en "bytes". Pour convertir des bytes en str, on fait .decode()
     headers = response.headers
     data = response.data.decode()
-    # print("headers " + str(headers))
-    # print("data " + str(data))
-    # print("status_code : " + str(response.status_code))
     # Si le pays n'est pas trouvé, il y a redirection
     if request.path == '/':
         assert 'Erreur' in data
@@ -89,25 +84,52 @@ def test_pays(client):
         # Carte encodée en "percent encoding"
         carte = html.iframe['data-html']
         # Décodage de la carte
-        carte = unquote(carte)
-        carte = str(carte)
+        carte_str = unquote(carte)
+        carte_str = str(carte_str)
         # La carte est générée par Folium via des injections javascript. On ne peut donc pas
         # la parser comme du HTML, il faut la parser comme une str
         # Le pays est-il bien mentionné?
-        assert pays in carte
-        # Si c'est une ambassade, la représentation en tableau est-elle correcte?
-        if 'Ambassade' in carte:
-            # Ici on ne peut pas tester plus à cause de problèmes de grammaire
-            # "ambassade à/en...".
-            assert "<tr><td>nom</td><td>Ambassade de France" in carte
-        # Tous les postes ont une ville
-        assert "<td>ville</td>" in carte
+        try:
+            assert bytes(pays, encoding="utf-8") in response.data
+        # Gestion des erreurs causées par les noms officiels du type "Iran, république islamique d'"
+        # Des erreurs peuvent aussi être causées par les apostrophes
+        except:
+            resp = str(response.data)
+            resp = resp.replace("'", '')
+            # resp = resp.replace("é", '')
+            # resp = resp.replace(" ", '')
+            # resp = resp.replace("é".upper(), '')
+            pays = pays.replace("'", '')
+            # pays = pays.replace("é", '')
+            # pays = pays.replace(" ", '')
+            pays = pays.split(sep=" ")
+            erreur = 0
+            # On teste chaque mot du nom officiel. Si aucun n'est sur la carte, alors il y a
+            # une erreur d'affichage.
+            for element in pays:
+                element = urllib.parse.quote(element)
+                print(element)
+                try:
+                    print("element : " + element)
+                    assert element in resp
+                except AssertionError:
+                    erreur += 1
+                    if not erreur < len(pays):
+                        raise AssertionError
+        # Toutes les villes de tous les pays doivent produire une carte.
+        assert "<table>" in carte_str
+        # Test des téléphones (tous les postes semblent avoir un téléphone, ce qui n'est pas le cas des
+        # villes ou des courriels
+        try:
+            match = re.search(r'>\+[0-9]{2,3}\s([0-9]+\s)+[0-9]+<', carte_str)
+        except ValueError:
+            raise ValueError
         # Tous les postes ont une latitude qui doit être un float (regex non greedy)
-        match = re.search(r'<td>latitude</td><td>(.+?)</td>', carte)
+        match = re.search(r'<td>latitude</td><td>(.+?)</td>', carte_str)
         try:
             float(match.group(1))
         except ValueError:
-            return "Erreur sur la latitude"
+            raise ValueError
 
 def test_ville(client):
     """Fonction de test pour le bon affichage d'une ville"""
@@ -157,6 +179,8 @@ def test_ville(client):
         except ValueError:
             return "Erreur sur le mail"
 
+@pytest.mark.repeat(3)
+# L'affichage de la carte ne dépend pas de variables et a donc peut de chance d'échouer
 def test_toutes_donnees(client):
     """Fonction de test pour le bon affichage de la carte générale"""
     rv = connexion(client)
@@ -187,6 +211,8 @@ def test_toutes_donnees(client):
     for ville in liste_villes:
         assert ville in carte
 
+@pytest.mark.repeat(3)
+# L'affichage de l'indexe ne dépend pas de variables et a donc peut de chance d'échouer
 def test_index(client):
     """Fonction de test pour le bon affichage d'un pays"""
     rv = connexion(client)

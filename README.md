@@ -121,7 +121,7 @@ fork, puis faire une *pull request* au *repository* principal. Ensuite, le frame
 chargera de vérifier la validité des nouvelles données. Travis CI est un framework d'intégration continue. Ce type de test est utilisé car la mise à jour des données 
 sources peut potentiellement affecter tous les utilisateurs de l'applications.
 
-Travis gère aussi les tests unitaires qui testent chaque bloc de l'application un par un. 
+Travis gère aussi les tests unitaires qui testent chaque bloc de l'application séparément et plusieurs fois chacun. 
 
 
 ### Droits et licences
