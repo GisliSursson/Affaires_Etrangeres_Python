@@ -24,6 +24,7 @@ nom_test = "example_nom" + str(randrange(1000000))
 motdepasse_test = "blabla" + str(randrange(1000000))
 mail_test = "lala" + str(randrange(1000000)) + "@a.fr"
 
+
 @pytest.fixture
 # Fonctions de configuration des tests
 def client():
@@ -43,16 +44,20 @@ def connexion(client):
 
 # Fonctions de lancement des tests
 
+@pytest.mark.repeat(1)
 def test_accueil(client):
     """Test de bon affichage de la page d'accueil"""
     rv = client.get('/')
     assert b'Choisissez votre type de recherche' in rv.data
 
+
+@pytest.mark.repeat(1)
 def test_inscri(client):
     """Test l'inscriptionla latitude d'un utilisateur aléatoire et sa connexion"""
     rv = inscription(client)
     # On évite les caractères spéciaux
     assert b'Enregistrement effectu' in rv.data
+
 
 def test_pays(client):
     """Fonction de test pour le bon affichage d'un pays"""
@@ -151,6 +156,7 @@ def test_ville(client):
             match = re.search(r'>.+?@diplomatie.gouv.fr</a></td>', carte)
         except ValueError:
             return "Erreur sur le mail"
+
 def test_toutes_donnees(client):
     """Fonction de test pour le bon affichage de la carte générale"""
     rv = connexion(client)
@@ -208,6 +214,9 @@ def test_index(client):
                 ville.replace("'", '') in data.replace("'", '')
             except ValueError:
                 raise ValueError
+
+
+@pytest.mark.repeat(1)
 def test_deconnexion(client):
     rv = connexion(client)
     assert b'Connexion effectu' in rv.data

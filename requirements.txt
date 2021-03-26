@@ -10,3 +10,4 @@ pandas
 werkzeug
 beautifulsoup4
 pytest
+pytest-repeat

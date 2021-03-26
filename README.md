@@ -114,12 +114,14 @@ des Affaires étrangères. Pour mettre à jour les données de l'application, il
 **`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`index/`** (s'il existe). 
 Le moteur de recherche recalculera alors l'indexation et créera un nouveau dossier contenant l'index. 
 
-#### Tests d'intégration continue
+#### Tests
 
 Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
 fork, puis faire une *pull request* au *repository* principal. Ensuite, le framework [Travis CI](https://travis-ci.com/) se
 chargera de vérifier la validité des nouvelles données. Travis CI est un framework d'intégration continue. Ce type de test est utilisé car la mise à jour des données 
 sources peut potentiellement affecter tous les utilisateurs de l'applications.
+
+Travis gère aussi les tests unitaires qui testent chaque bloc de l'application un par un. 
 
 
 ### Droits et licences
