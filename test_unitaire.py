@@ -14,7 +14,7 @@ import re
 # On fait un test pour chacune des grandes fonctions de l'application : la recherche par pays, par ville,
 # l'affichage de la carte de toutes les données, l'affichage de l'index.
 
-# Etant donné que toutes les routes de l'application retournent des render_template, les tests_ic sont faits sur
+# Etant donné que toutes les routes de l'application retournent des render_template, les tests sont faits sur
 # les documents HTML retournés.
 
 # NB: ce fichier de test est placé au même niveau que le "run.py" afin de bénéficier des mêmes imports relatifs.
@@ -108,9 +108,7 @@ def test_pays(client):
             # une erreur d'affichage.
             for element in pays:
                 element = urllib.parse.quote(element)
-                print(element)
                 try:
-                    print("element : " + element)
                     assert element in resp
                 except AssertionError:
                     erreur += 1
@@ -138,16 +136,13 @@ def test_ville(client):
     ville = choice(liste_villes)
     ville_url = urllib.parse.quote(ville)
     response = client.get("/resultats_ville?query=" + ville_url, follow_redirects=True)
-    # print(response)
     # La réponse HTTP doit forcément avoir un coprs (puisqu'on retourne des données).
     # .data est en "bytes". Pour convertir des bytes en str, on fait .decode()
     headers = response.headers
     data = response.data.decode()
-    # print("headers " + str(headers))
-    # print("data " + str(data))
-    # print("status_code : " + str(response.status_code))
     # Si le pays n'est pas trouvé, il y a redirection
     if request.path == '/':
+        # On test ici le flash
         assert 'Erreur' in data
     # Sinon, le code HTTP renvoyé est celui du succès
     else:
@@ -158,7 +153,8 @@ def test_ville(client):
         html = BeautifulSoup(data, 'html.parser')
         # Test pour la ligne de titre
         assert html.h3.string == "Votre résultat pour : " + ville
-        # Carte encodée en "percent encoding"
+        # Carte encodée en "percent encoding" et mise dans un 'iframe' (selon la documentation de
+        # folium.
         carte = html.iframe['data-html']
         # Décodage de la carte
         carte = unquote(carte)
@@ -176,7 +172,8 @@ def test_ville(client):
         # Tous les postes ont un mail
         try:
             match = re.search(r'>.+?@diplomatie.gouv.fr</a></td>', carte)
-        except ValueError:
+        # Type d'erreur renvoyé par le module regex selon la documentation
+        except IndexError:
             return "Erreur sur le mail"
 
 @pytest.mark.repeat(3)
@@ -190,11 +187,7 @@ def test_toutes_donnees(client):
     # .data est en "bytes". Pour convertir des bytes en str, on fait .decode()
     headers = response.headers
     data = response.data.decode()
-    # print("headers " + str(headers))
-    # print("data " + str(data))
-    # print("status_code : " + str(response.status_code))
-    # Si le pays n'est pas trouvé, il y a redirectionfollow_redirects=True
-    # Sinon, le code HTTP renvoyé est celui du succès
+    # Le code HTTP renvoyé est-il celui du succès?
     assert response.status_code == 200
     # Le corps est-il bien de l'HTML (l'application ne retourne que des pages web)?
     assert 'Content-Type: text/html; charset=utf-8' in str(headers)
@@ -218,7 +211,7 @@ def test_index(client):
     rv = connexion(client)
     assert b'Connexion effectu' in rv.data
     response = client.get("/recherche?type_voulu=index")
-    # La réponse HTTP doit forcément avoir un coprs (puisqu'on retourne des données).
+    # La réponse HTTP doit forcément avoir un corps (puisqu'on retourne des données).
     # .data est en "bytes". Pour convertir des bytes en str, on fait .decode()
     headers = response.headers
     data = response.data.decode()
@@ -230,7 +223,6 @@ def test_index(client):
     # On vérifie que chaque ville est mentionnée une fois au moins dans l'index
     for ville in liste_villes:
         # La méthode title permet de standardiser les majuscules
-        # assert ville.title() in data
         ville = ville.title()
         try:
             ville in data

@@ -1,41 +1,17 @@
-liste_pays = ["Afghanistan", "Afrique du Sud", "Åland, Îles", "Albanie", "Algérie", "Allemagne", "Andorre",
-    "Angola", "Anguilla", "Antarctique", "Antigua et Barbuda", "Antilles néerlandaises", "Arabie Saoudite", "Argentine",
-    "Arménie", "Aruba", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahrein", "Bangladesh", "Barbade", "Bélarus",
-    "Belgique", "Bélize", "Bénin", "Bermudes", "Bhoutan", "Bolivie (État plurinational de)",
-    "Bonaire, Saint-Eustache et Saba", "Bosnie-Herzégovine", "Botswana", "Bouvet, Ile", "Brésil", "Brunéi Darussalam",
-    "Bulgarie", "Burkina Faso", "Burundi", "Cabo Verde", "Caïmans, Iles", "Cambodge", "Cameroun", "Canada", "Chili",
-    "Chine", "Christmas, île", "Chypre", "Cocos/Keeling (Îles)", "Colombie", "Comores", "Congo",
-    "Congo, République démocratique du", "Cook, Iles", "Corée, République de",
-    "Corée, République populaire démocratique de", "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba",
-    "Curaçao", "Danemark", "Djibouti", "Dominicaine, République", "Dominique", "Egypte", "El Salvador",
-    "Emirats arabes unis", "Equateur", "Erythrée", "Espagne", "Estonie", "Etats-Unis d'Amérique", "Ethiopie",
-    "Falkland/Malouines (Îles)", "Féroé, îles", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie",
-    "Géorgie du sud et les îles Sandwich du sud", "Ghana", "Gibraltar", "Grèce", "Grenade", "Groenland", "Guadeloupe",
-    "Guam", "Guatemala", "Guernesey", "Guinée", "Guinée-Bissau", "Guinée équatoriale", "Guyana", "Guyane française",
-    "Haïti", "Heard, Ile et MacDonald, îles", "Honduras", "Hong Kong", "Hongrie", "Île de Man",
-    "Îles mineures éloignées des Etats-Unis", "Îles vierges britanniques", "Îles vierges des Etats-Unis",
-    "Inde", "Indien (Territoire britannique de l'océan)", "Indonésie", "Iran, République islamique d'", "Iraq",
-    "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jersey", "Jordanie", "Kazakhstan", "Kenya",
-    "Kirghizistan", "Kiribati", "Koweït", "Lao, République démocratique populaire", "Lesotho", "Lettonie", "Liban",
-    "Libéria", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macao", "Macédoine du nord", "Madagascar",
-    "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Mariannes du nord, Iles", "Maroc", "Marshall, Iles", "Martinique",
-    "Maurice", "Mauritanie", "Mayotte", "Mexique", "Micronésie, Etats Fédérés de", "Moldova, République de", "Monaco",
-    "Mongolie", "Monténégro", "Montserrat", "Mozambique", "Myanmar", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger",
-    "Nigéria", "Niue", "Norfolk, Ile", "Norvège", "Nouvelle-Calédonie", "Nouvelle-Zélande", "Oman", "Ouganda",
-    "Ouzbékistan", "Pakistan", "Palaos", "Palestine, Etat de", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay",
-    "Pays-Bas", "Pays inconnu", "Pays multiples", "Pérou", "Philippines", "Pitcairn", "Pologne", "Polynésie française",
-    "Porto Rico", "Portugal", "Qatar", "République arabe syrienne", "République centrafricaine", "Réunion", "Roumanie",
-    "Royaume-Uni de Grande-Bretagne et d'Irlande du Nord", "Russie, Fédération de", "Rwanda", "Sahara occidental",
-    "Saint-Barthélemy", "Saint-Kitts-et-Nevis", "Saint-Marin", "Saint-Martin (partie française)",
-    "Saint-Martin (partie néerlandaise)", "Saint-Pierre-et-Miquelon", "Saint-Siège", "Saint-Vincent-et-les-Grenadines",
-    "Sainte-Hélène, Ascension et Tristan da Cunha", "Sainte-Lucie", "Salomon, Iles", "Samoa", "Samoa américaines",
-    "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie",
-    "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Svalbard et île Jan Mayen",
-    "Swaziland", "Tadjikistan", "Taïwan, Province de Chine", "Tanzanie, République unie de", "Tchad", "Tchécoslovaquie",
-    "Tchèque, République", "Terres australes françaises", "Thaïlande", "Timor-Leste", "Togo", "Tokelau", "Tonga",
-    "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turks-et-Caïcos (Îles)", "Turquie", "Tuvalu", "Ukraine", "URSS",
-    "Uruguay", "Vanuatu", "Vatican", "Venezuela (République bolivarienne du)", "Viet Nam", "Viet Nam (Sud)",
-    "Wallis et Futuna", "Yémen", "Yougoslavie", "Zaïre", "Zambie", "Zimbabwe"]
+from app.modeles.data_dict import pays as liste_pays
+
+
+# Listes qui serviront aux tests
+
+# Suppression des espaces inutiles (on sait jamais)
+for pays in liste_pays:
+    pays = pays.strip()
+
+
+# On a décidé d'hard coder la liste des villes. En effet, elle générée via Whoosh. Si on voulait
+# la générer dynamiquement, il faudrait relancer l'indexation à chaque lancement de l'application.
+# Si on ne fait pas ça, la liste "liste_villes" est perpétuellement vide, sauf lors du premier lancement
+# de l'application.
 
 liste_villes = ["Kaboul", "Pretoria", "Cape Town", "Johannesburg", "Tirana", "Alger", "Annaba", "Oran",
     "Berlin", "Düsseldorf", "Francfort", "Hambourg", "Munich", "Sarrebruck", "Stuttgart", "Andorre-la-Vieille",
@@ -66,3 +42,4 @@ liste_villes = ["Kaboul", "Pretoria", "Cape Town", "Johannesburg", "Tirana", "Al
     "Khartoum", "Djouba", "Stockholm", "Berne", "Zurich", "Genève", "Damas", "Douchanbé", "Taipei",
     "Dar es Salaam ", "N'Djamena", "Bangkok", "Lomé", "Port d'Espagne", "Tunis", "Achgabat", "Ankara",
     "Istanbul", "Kiev", "Montevideo", "Caracas", "Hanoï", "Ho Chi-Minh Ville", "Lusaka", "Harare"]
+

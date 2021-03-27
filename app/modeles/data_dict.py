@@ -3,10 +3,12 @@ import os
 from ..app import chemin_actuel
 
 # Script servant à charger les données du CSV dans un dict Python
+pays = []
 with open(os.path.join(chemin_actuel, "modeles", "codes_pays.csv"), "r") as csvfile:
     reader = csv.reader(csvfile, delimiter=';')
     codes_dict = {}
     for row in reader:
+        pays.append(row[0])
         # Traitement spécifique pour Israel dont le code ISO est 'IL' mais qui est codé comme 'ILPS' dans les données
         # du ministère. Un traitement manuel a également été fait pour rajouter le Kosovo.
         if row[1] == "IL":

@@ -114,14 +114,23 @@ des Affaires étrangères. Pour mettre à jour les données de l'application, il
 **`app/modeles/data.json`** par les nouvelles données et de supprimer le dossier **`index/`** (s'il existe). 
 Le moteur de recherche recalculera alors l'indexation et créera un nouveau dossier contenant l'index. 
 
-#### Tests
+### Tests
 
-Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
-fork, puis faire une *pull request* au *repository* principal. Ensuite, le framework [Travis CI](https://travis-ci.com/) se
-chargera de vérifier la validité des nouvelles données. Travis CI est un framework d'intégration continue. Ce type de test est utilisé car la mise à jour des données 
-sources peut potentiellement affecter tous les utilisateurs de l'applications.
+Nous avons décidé de faire deux types de tests pour cette application.
 
-Travis gère aussi les tests unitaires qui testent chaque bloc de l'application séparément et plusieurs fois chacun. 
+Le premier vérifie la validité des données sources issue du Ministère des Affaires étrangères. De ce fait,
+il est possible pour un utilisateur de changer les données sources, par exemple si celles-ci sont mises
+à jour par le Ministère. Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
+*fork*, puis faire une *pull request* au *repository* principal.
+
+Le deuxième type de tests sont les tests unitaires. Ils font tourner chaque bloc de l'application séparément et plusieurs 
+fois chacun. 
+
+Ces deux types de tests sont déclenchés via le framework d'intégration continue [Travis CI](https://travis-ci.com/), c'est-à-dire
+à chaque fois qu'il y a un mouvement sur le *repository* principal. De ce fait, les utilisateurs peuvent proposer
+des changements ou des améliorations à l'application via des *pull request* qui seront à chaque fois validées 
+par des tests. Si vous souhaitez voir l'exécution des tests, vous pouvez y accéder via ce
+[lien](https://travis-ci.com/github/GisliSursson/Affaires_Etrangeres_Python).
 
 
 ### Droits et licences
