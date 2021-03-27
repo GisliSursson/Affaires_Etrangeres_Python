@@ -125,8 +125,8 @@ def recherche():
                         if search_object:
                             ville = ville.replace(search_object.group(), '')
                         # Correction unique pour Brasilia (si utilisation regex impacte autres villes)
-                        if ' - Df' in ville:
-                            ville = ville.replace(' - Df', '')
+                        if 'Brasilia' in ville:
+                            ville = 'Brasilia'
                         # Détermination du "nom exact" du pays (utilisé pour hard coder les URL)
                         for key, value in data.items():
                             if value.lower() == representation['iso2']:
