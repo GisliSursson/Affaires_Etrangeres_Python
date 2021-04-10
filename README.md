@@ -123,7 +123,9 @@ Nous avons décidé de faire deux types de tests pour cette application.
 Le premier vérifie la validité des données sources issue du Ministère des Affaires étrangères. De ce fait,
 il est possible pour un utilisateur de changer les données sources, par exemple si celles-ci sont mises
 à jour par le Ministère. Si vous souhaitez mettre à jour les données, vous devez mettre à jour le fichier **`app/modeles/data.json`** dans votre 
-*fork*, puis faire une *pull request* au *repository* principal.
+*fork*, puis faire une *pull request* au *repository* principal. Une mise à jour des données sera vérifiée par un test d'intégration
+continue, c'est-à-dire un test destiné à vérifier que la modification ne cause pas de conflits avec le reste de 
+l'application.
 
 Le deuxième type de tests sont les tests unitaires. Ils font tourner chaque bloc de l'application séparément et plusieurs 
 fois chacun. 
