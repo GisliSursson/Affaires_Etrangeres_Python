@@ -4,12 +4,12 @@ Devoir final réalisé dans le cadre du cours de Python de M. Clérice à l'Ecol
 
 ## Présentation
 
-Cette application est destinée à la navigation dans les données du réseau diplomatique français publiées par le 
-Ministère de l'Europe et des Affaires étrangères et en propose des représentations cartographiques. 
+Cette application est destinée à la navigation dans les données du réseau diplomatique français, publiées par le 
+Ministère de l'Europe et des Affaires étrangères, et en propose des représentations cartographiques. 
 
 Les consignes étaient les suivantes :
 
-- Utilisation du JSON comme "base de données".
+- Utilisation d'une "base de données" JSON.
 - Utilisation d'un moteur de recherche *pure python* pour la navigation et la recherche dans les données (eg. whoosh).
 - Visualisation avec du JavaScript, type *leaflet*.
 - Fonctionnalité d'affichage d'un élément et un index général contenant les données.
@@ -35,6 +35,8 @@ A chaque recherche un niveau de zoom optimal est calculé, c'est-à-dire le nive
 L'application gère également des comptes utilisateurs (inscription, connexion, mise à jour des données utilisateur, historique des recherches). 
 
 On a aussi prévu une gestion des erreurs causées par la nature des données de départ (par exemple l'entrée dans le champ de recherche d'un pays qui n'existe plus).
+
+L'application permet également de visualiser l'ensemble des données de deux manières différentes : sous la forme d'une liste générale et sous la forme d'une carte générale.
 
 ## Captures d'écran
 
@@ -69,7 +71,7 @@ Les packages suivants sont nécessaires. Lancez depuis votre terminal (Mac / Lin
 sudo apt-get install python3 libfreetype6-dev python3-pip python3-virtualenv sqlite3
 ```
 
-Clonez le présent *repository* dans un dossier de votre 
+Clonez le présent *repository* dans un dossier de votre choix
 
  ```bash
 git clone https://github.com/GisliSursson/Affaires_Etrangeres_Python.git
