@@ -17,6 +17,8 @@ schema = Schema(city=TEXT, name=TEXT(stored=True), content=TEXT(stored=True))
 # stocker l'index dans un dossier comme cela).
 villes = []
 if not os.path.exists("index"):
+    # Ce print ne doit s'afficher que lorsque l'index est écrit, c'est-à-dire lors du 1er lancement de l'application,
+    # ou lors d'un changement des données décidé par l'utilisateur.
     print("Création du dossier 'index'.")
     os.mkdir("index")
     index = create_in("index", schema)
