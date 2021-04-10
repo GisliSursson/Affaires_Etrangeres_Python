@@ -71,9 +71,9 @@ def test_schema(doc):
 # Dossier parent de l'actuel
 dossier_parent = dirname(dirname(abspath(__file__)))
 # Chemin vers le dossier "modeles" où se trouvent les données
-chemin_modeles = os.path.abspath(os.path.join(dossier_parent, "modeles"))
+chemin_modeles = os.path.abspath(os.path.join(dossier_parent, "app", "modeles"))
 
-for root, dirs, files in os.walk(chemin_modeles):
+for root, dirs, files in os.walk(chemin_modeles, topdown=True):
     for name in files:
         filename = os.path.join(root, name)
         if not filename.endswith(".json"):
