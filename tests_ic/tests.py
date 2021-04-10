@@ -20,6 +20,7 @@ def test_valide(doc):
     with open(doc) as doc:
         try:
             doc = json.load(doc)
+            print("Votre JSON est valide.")
         # Type d'erreur levée en cas de JSON malformé.
         except json.decoder.JSONDecodeError:
             print("Attention ! Votre document n'est pas du JSON valide.")
