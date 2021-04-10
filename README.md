@@ -10,15 +10,15 @@ Ministère de l'Europe et des Affaires étrangères, et en propose des représen
 Les consignes étaient les suivantes :
 
 - Utilisation d'une "base de données" JSON.
-- Utilisation d'un moteur de recherche *pure python* pour la navigation et la recherche dans les données (eg. whoosh).
-- Visualisation avec du JavaScript, type *leaflet*.
+- Utilisation d'un moteur de recherche *pure python* pour la navigation et la recherche dans les données (eg. Whoosh).
+- Visualisation avec du JavaScript (eg. Leaflet).
 - Fonctionnalité d'affichage d'un élément et un index général contenant les données.
 
 ### Nota
 
 Les données sources sont irrégulières (informations qui ne sont pas fournies pour tous les postes, pays où le code ISO renseigné est faux, coordonnées géographiques correspondant au mauvais pays, fautes d'orthographe...).
 Nous avons choisi d'adapter l'application, tant que faire se peut, à ces inconsistances plutôt que de corriger les données sources. De ce fait, il est possible
-de changer les données source pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires étrangères.
+de changer les données sources pour, par exemple, en utiliser une version mise à jour par le Ministère des Affaires étrangères.
 
 ## Fonctionnalités
 
@@ -104,7 +104,7 @@ deactivate
 
 ### Lancement
 
-Dans le dossier contenant le projet, lancez 
+Dans le dossier contenant le projet (avec votre environnement virtuel activé), lancez 
 
 ```bash
 python3 run.py 

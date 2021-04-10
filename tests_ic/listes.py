@@ -10,7 +10,7 @@ for pays in liste_pays:
 
 # On a décidé d'hard coder la liste des villes. En effet, elle générée via Whoosh. Si on voulait
 # la générer dynamiquement, il faudrait relancer l'indexation à chaque lancement de l'application.
-# Si on ne fait pas ça, la liste "liste_villes" est perpétuellement vide, sauf lors du premier lancement
+# Si on ne l'hard codait pas, la liste "liste_villes" est perpétuellement vide, sauf lors du premier lancement
 # de l'application.
 
 liste_villes = ["Kaboul", "Pretoria", "Cape Town", "Johannesburg", "Tirana", "Alger", "Annaba", "Oran",

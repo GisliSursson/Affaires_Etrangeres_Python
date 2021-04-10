@@ -20,7 +20,6 @@ def test_valide(doc):
     with open(doc) as doc:
         try:
             doc = json.load(doc)
-            print("Votre JSON est valide.")
         # Type d'erreur levée en cas de JSON malformé.
         except json.decoder.JSONDecodeError:
             print("Attention ! Votre document n'est pas du JSON valide.")
@@ -31,7 +30,7 @@ def test_schema(doc):
     ISO à 2 chiffres (sauf pour Israel) et les valeurs sont des dicionnaires. Etant donnée l'irrégularité des données
     et la manière dont est codée l'application, il n'est pas nécessaire de vérifier l'intégrités des dict pour chaque
     pays. De plus, cela pourrait aller à l'encontre du principe pythonien de EAFP (Easier to ask for forgiveness than permission)
-    qui consiste à faire des itérations sans vérifications des données a priori et d'éventullement prévoir des erreurs.
+    qui consiste à faire des itérations sans vérifications des données a priori et d'éventuellement prévoir des erreurs.
 
     Le JSON des données doit avoir l'architecture suivante : {"ab" : [{dict}, {dict}...], "cd": ...}
             :param doc: doc à tester
@@ -74,7 +73,7 @@ dossier_parent = dirname(dirname(abspath(__file__)))
 # Chemin vers le dossier "modeles" où se trouvent les données
 chemin_modeles = os.path.abspath(os.path.join(dossier_parent, "modeles"))
 
-for root, dirs, files in os.walk(chemin_modeles, topdown=True):
+for root, dirs, files in os.walk(chemin_modeles):
     for name in files:
         filename = os.path.join(root, name)
         if not filename.endswith(".json"):
@@ -85,6 +84,3 @@ for root, dirs, files in os.walk(chemin_modeles, topdown=True):
             # On appelle les fonctions de test sur le document à tester
             test_valide(doc_a_tester)
             test_schema(doc_a_tester)
-
-# Etant donné que les fonctions principales du fichier "routes.py" reposent sur des variables dépendantes de
-# requêtes HTTP, nous avons déterminé qu'il n'était pas possible de les tester avec Travis.
