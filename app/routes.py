@@ -159,7 +159,7 @@ def recherche():
         # Liste qui servira à la détermination du niveau de zoom optimal
         ensemble_coord = []
         searcher = indexation.searcher()
-        # Création d'un itérable contenant toutes les données indexées (les villes)
+        # Création d'un itérable contenant le nom de toutes les villes indexées
         iterable = list(searcher.lexicon("city"))
         for element in iterable:
             element = element.decode("utf-8")
@@ -178,7 +178,7 @@ def recherche():
                     a_afficher = ast.literal_eval(a_afficher)
                     a_afficher = dict(a_afficher)
                     # Construction graduelle du HTML qui sera affiché dans les bulles de la cartes
-                    # NB : le code prend en compte l'inconsistence des données sources
+                    # NB : le code prend en compte l'inconsistance des données sources
                     # (certaines clefs manquent à certains dict
                     html = "<table>"
                     for key, value in a_afficher.items():
@@ -194,13 +194,15 @@ def recherche():
                                 value = value.replace("<a", "<a target='_blank'")
                             html = html + '<tr><td>' + str(key).strip() + '</td><td>' + str(value).strip() + '</td></tr>'
                         if type(value) == dict:
-                            # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va chercher les anchors
-                            # en regex (les seules choses intéresantes pour l'utilisateur graphique)
+                            # Traitement des socials qui peuvent être des nested dict. Conversion en str et on va
+                            # chercher les anchors
+                            # en regex (les seules choses intéressantes pour l'utilisateur graphique)
                             string = json.dumps(value)
                             # regex non greedy
                             socials = re.findall('<a.+?</a>', string)
                             for index, element in enumerate(list(set(socials))):
-                                # Modification de l'URL présent dans les données sources pour ouverture dans un nouvel onglet
+                                # Modification de l'URL présent dans les données sources pour
+                                # ouverture dans un nouvel onglet
                                 element = element.replace("<a", "")
                                 ajout = "<a target='_blank''"
                                 element = ajout + element
@@ -217,7 +219,7 @@ def recherche():
 
                 # S'il y a plusieurs représentations diplomatiques dans la ville
                 elif len(results) > 1:
-                    # Liste qui servira à la déterminsation du niveau de zoom optimal
+                    # Liste qui servira à la détermination du niveau de zoom optimal
                     # "Results" est un whoosh.searching.Results qui contient plusieurs "hits"
                     for result_element in results:
                         # Transformation du whoosh.searching.Hit en dict
@@ -245,7 +247,7 @@ def recherche():
                             if type(value) == dict:
                                 # Traitement des socials qui peuvent être des nested dict.
                                 # Conversion en str et on va chercher les anchors
-                                # en regex (les seules choses intéresantes pour l'utilisateur graphique)
+                                # en regex (les seules choses intéressantes pour l'utilisateur graphique)
                                 string = json.dumps(value)
                                 # regex non greedy
                                 socials = re.findall('<a.+?</a>', string)
@@ -420,7 +422,7 @@ def resultats_ville():
                     if type(value) == dict:
                         # Traitement des socials qui peuvent être des nested dict.
                         # Conversion en str et on va chercher les anchors
-                        # en regex (les seules choses intéresantes pour l'utilisateur graphique)
+                        # en regex (les seules choses intéressantes pour l'utilisateur graphique)
                         string = json.dumps(value)
                         # regex non greedy
                         socials = re.findall('<a.+?</a>', string)
@@ -554,12 +556,8 @@ def resultats():
     # Numpy et panda sont utilisés pour trouver la liste "minimum/maximum" dans une liste de listes.
     ensemble_coord = numpy.array(ensemble_coord)
     data_frame = pd.DataFrame(ensemble_coord, columns=['Lat', 'Long'])
-    # print(ensemble_coord)
-    # print(data_frame)
     sw = data_frame[['Lat', 'Long']].min().values.tolist()
     ne = data_frame[['Lat', 'Long']].max().values.tolist()
-    # print(sw)
-    # print(ne)
     myMap.fit_bounds([sw, ne])
     # Ecriture dans l'historique (pour les pays)
     if current_user.is_authenticated is True:
@@ -688,11 +686,3 @@ def modification():
         flash("Vos informations ont bien été modifiées", "success")
         return render_template("accueil.html")
     return render_template("edition.html", user=user)
-
-
-#@app.after_request
-#def after(response):
-    #print(response.status)
-    #print(response.headers)
-    #print(response.get_data().decode('utf-8'))
-    #return response
