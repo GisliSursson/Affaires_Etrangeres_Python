@@ -38,7 +38,7 @@ def inscription(client):
          'nom': nom_test, 'email': mail_test}, follow_redirects=True)
 
 def connexion(client):
-    """Fonction qui sera utilisé pour tester l'inscription"""
+    """Fonction qui sera utilisé pour tester la connexion"""
     return client.post('/connexion', data=
         {'login': login_test, 'motdepasse': motdepasse_test}, follow_redirects=True)
 
@@ -48,6 +48,7 @@ def connexion(client):
 def test_accueil(client):
     """Test de bon affichage de la page d'accueil"""
     rv = client.get('/')
+    # On cherche dans ce qui est encodé en bytes
     assert b'Choisissez votre type de recherche' in rv.data
 
 
@@ -55,7 +56,7 @@ def test_accueil(client):
 def test_inscri(client):
     """Test l'inscriptionla latitude d'un utilisateur aléatoire et sa connexion"""
     rv = inscription(client)
-    # On évite les caractères spéciaux
+    # On évite les caractères accentués
     assert b'Enregistrement effectu' in rv.data
 
 def test_pays(client):
@@ -65,7 +66,7 @@ def test_pays(client):
     pays = choice(liste_pays)
     pays_url = urllib.parse.quote(pays)
     response = client.get("/resultats?query=" + pays_url, follow_redirects=True)
-    # La réponse HTTP doit forcément avoir un coprs (puisqu'on retourne des données).
+    # La réponse HTTP doit forcément avoir un corps (puisqu'on retourne des données).
     # .data est en "bytes". Pour convertir des bytes en str, on fait .decode()
     headers = response.headers
     data = response.data.decode()
@@ -96,12 +97,7 @@ def test_pays(client):
         except:
             resp = str(response.data)
             resp = resp.replace("'", '')
-            # resp = resp.replace("é", '')
-            # resp = resp.replace(" ", '')
-            # resp = resp.replace("é".upper(), '')
             pays = pays.replace("'", '')
-            # pays = pays.replace("é", '')
-            # pays = pays.replace(" ", '')
             pays = pays.split(sep=" ")
             erreur = 0
             # On teste chaque mot du nom officiel. Si aucun n'est sur la carte, alors il y a
